@@ -15,7 +15,7 @@ NOTE: You will need administrator rights to run the MATLAB Runtime installer.
 from the following link on the MathWorks website:
 	https://www.mathworks.com/products/compiler/mcr/index.html
 
-3. Run DBscorer.
+3. Run DBscorer.exe.
 
 For the video conversion you can use any converter which works for you. But if you want to use ffmpeg here is how we did it.
 For Using ffmpeg
