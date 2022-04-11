@@ -3,6 +3,8 @@ Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scor
 
 Forces swim test and Tail suspension test automation
 
+![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
+
 **Demo**
 
 https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
@@ -50,4 +52,4 @@ for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf sca
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
 
-![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
+
