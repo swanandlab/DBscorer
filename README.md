@@ -2,6 +2,7 @@
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
 Forces swim test and Tail suspension test automation
+
 DBScorer Executable
 
 Prerequisites for Deployment 
