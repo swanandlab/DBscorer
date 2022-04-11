@@ -48,4 +48,4 @@ for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf sca
 
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
-Please cite the paper if use the code for your analysis.
+Please cite the paper if you use the code for analysis.
