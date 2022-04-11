@@ -3,7 +3,11 @@ Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scor
 
 Forces swim test and Tail suspension test automation
 
-# [DEMO](/https://github.com/swanandlab/DBscorer/blob/main/DBscorer%20Installation%20and%20Use%20360p.mp4)
+**Demo**
+
+<video src="https://github.com/swanandlab/DBscorer/blob/main/DBscorer%20Installation%20and%20Use%20360p.mp4" controls="controls" style="max-width: 730px;">
+</video>
+
 DBScorer Executable
 
 Prerequisites for Deployment 
