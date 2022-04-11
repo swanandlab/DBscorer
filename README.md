@@ -20,7 +20,7 @@ Run DBscorer.exe.
 For the video conversion you can use any converter which works for you. But if you want to use ffmpeg here is how we did it.
 **For Using ffmpeg
 
-Download from the [ffmpeg](http://ffmpeg.org/).
+Download from the [ffmpeg](http://ffmpeg.org/) website.
 
 After installing check if below folder exists.
 C:\ffmpeg\ffmpeg
