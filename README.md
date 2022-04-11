@@ -1,7 +1,7 @@
 # [DBscorer](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
-
+Forces swim test and Tail suspension test automation
 DBScorer Executable
 
 Prerequisites for Deployment 
