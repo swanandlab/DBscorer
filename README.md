@@ -5,7 +5,8 @@ Forces swim test and Tail suspension test automation
 
 **Demo**
 
-https://github.com/swanandlab/DBscorer/blob/main/DBscorer%20Installation%20and%20Use%20360p.mp4
+https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
+
 
 DBScorer Executable
 
