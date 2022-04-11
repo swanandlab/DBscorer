@@ -1,4 +1,4 @@
-# [DBscorer eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
+# DBscorer
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
 Forces swim test and Tail suspension test automation
@@ -45,3 +45,6 @@ You can also create the .bat file by pasting the below line in notepad and savin
 
 
 for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf scale=480:-1 -r 15 -an "C:\ffmpeg\Converted_Videos\%%~na.mp4
+
+
+# [Publication](https://doi.org/10.1523/ENEURO.0305-21.2021)
