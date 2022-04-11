@@ -16,15 +16,14 @@ To find its location, enter
 at the MATLAB prompt.
 NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
 
-Alternatively, download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
+Alternatively, download and install the Windows version 9.9 ([R2020b])(https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
 
 Run DBscorer.exe.
 
 For the video conversion you can use any converter which works for you. But if you want to use ffmpeg here is how we did it.
-For Using ffmpeg
+**For Using ffmpeg
 
-Download from the link.
-http://ffmpeg.org/
+Download from the [ffmpeg](http://ffmpeg.org/).
 
 After installing check if below folder exists.
 C:\ffmpeg\ffmpeg
