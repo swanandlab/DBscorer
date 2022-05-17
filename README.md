@@ -4,7 +4,6 @@ Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scor
 Forces swim test and Tail suspension test automation
 
 ![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
-[![Github All Releases](https://img.shields.io/github/downloads/swanandlab/DBscorer/archive/refs/heads/main/total.svg)]()
 
 **Demo**
 
