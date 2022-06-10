@@ -22,7 +22,10 @@ NOTE: You will need administrator rights to run the MATLAB Runtime installer.
 
 Run DBscorer.exe.
 
+Please check the sample videos to test and get an idea of the recording condition.
+
 [TST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/TST%20Sample%20Video.mp4)
+
 [FST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/FST%20SAMPLE%20VIDEO.mp4)
 
 
@@ -61,7 +64,8 @@ for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf sca
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
 Raise a issue or email in case if you need any help.
-$ Version 2 will be released soon. 
+
+@Version 2 will be released soon@
 
 
 
