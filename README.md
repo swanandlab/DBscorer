@@ -32,25 +32,16 @@ Please check the sample videos to test and get an idea of the recording conditio
 
 **Video Conversion**
 
-For the video conversion you can use any converter which works for you. But if you want to use ffmpeg here is how we did it.
-**For Using ffmpeg
-
-Download from the [ffmpeg](http://ffmpeg.org/) website.
-
-After installing check if below folder exists.
+1. Download from the [ffmpeg](http://ffmpeg.org/) website.
+2. After installing check if below folder exists.
 C:\ffmpeg\ffmpeg
-
-Create the following folder.
+3. Create the following folder.
 C:\ffmpeg\Converted_Videos
-
-Put the videos in a folder along with ffmpeg_convert.bat file.
-
-Double click to start conversion.
+4. Put the videos in a folder along with ffmpeg_convert.bat file.
+5. Double click to start conversion.
 
 Alternatively you can drag and drop files on the batch file to start conversion.
-
 You can edit the .bat file in notepad.
-
 You can also create the .bat file by pasting the below line in notepad and saving it as .bat file.
 
 for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf scale=480:-1 -r 15 -an "C:\ffmpeg\Converted_Videos\%%~na.mp4
