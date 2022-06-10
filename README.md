@@ -55,8 +55,7 @@ Please cite the paper if you use the code for analysis.
 Raise a issue or email in case if you need any help.
 
 Version 2 will be released soon.
-Better speed
-Smoother manual scoring
+
 
 
 
