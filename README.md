@@ -11,16 +11,10 @@ https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-
 
 **Instructions**
 
-DBScorer Executable
-
-Prerequisites for Deployment 
-
-
-Download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip)) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
-
+1. Download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip)) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
 NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
 
-Run DBscorer.exe.
+2. Run DBscorer.exe.
 
 Please check the sample videos to test and get an idea of the recording condition.
 
@@ -59,7 +53,7 @@ for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf sca
 2. Background should be glare and shadow free. Use diffuse indirect light to avoid shadow and glares. Do not use reflective background.
 3. Fill background carefully. You need to fill only the part which is from animal.
 4. Mark the area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding.
-
+5. Video should be in constant frame rate. If not then convert using ffmpeg or any software that you like.
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
