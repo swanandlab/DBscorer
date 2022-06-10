@@ -27,7 +27,7 @@ Please check the sample videos to test and get an idea of the recording conditio
 1. Camera should be stationary. Use a tripod to mount the camera.
 2. Background should be glare and shadow free. Use diffuse indirect light to avoid shadow and glares. Do not use reflective background.
 3. Fill background carefully. You need to fill only the part which is from animal.
-4. Mark the area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding.
+4. Crop a rectangular area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding. See the demo video.
 5. Video should be in constant frame rate. If not then convert using ffmpeg or any software that you like.
 
 It is always good to improve video quality during recording to avoid problems in detection.
