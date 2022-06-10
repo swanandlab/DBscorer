@@ -52,7 +52,7 @@ for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf sca
 Please cite the paper if you use the code for analysis.
 Raise a issue or email in case if you need any help.
 
-**Version 2 will be released soon!
+*Version 2 will be released soon!
 
 
 
