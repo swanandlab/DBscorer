@@ -30,6 +30,8 @@ Please check the sample videos to test and get an idea of the recording conditio
 4. Mark the area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding.
 5. Video should be in constant frame rate. If not then convert using ffmpeg or any software that you like.
 
+It is always good to improve video quality during recording to avoid problems in detection.
+
 **Video Conversion**
 
 1. Download from the [ffmpeg](http://ffmpeg.org/) website.
@@ -52,7 +54,10 @@ for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf sca
 Please cite the paper if you use the code for analysis.
 Raise a issue or email in case if you need any help.
 
-Version 2 will be released soon!
+Version 2 will be released soon.
+Better speed
+Smoother manual scoring
+
 
 
 
