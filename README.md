@@ -10,6 +10,7 @@ Forces swim test and Tail suspension test automation
 https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
 
 **Instructions**
+
 DBScorer Executable
 
 Prerequisites for Deployment 
@@ -20,6 +21,10 @@ Download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com
 NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
 
 Run DBscorer.exe.
+
+[TST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/TST%20Sample%20Video.mp4)
+[FST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/FST%20SAMPLE%20VIDEO.mp4)
+
 
 **Video Conversion**
 
@@ -46,8 +51,17 @@ You can also create the .bat file by pasting the below line in notepad and savin
 
 for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf scale=480:-1 -r 15 -an "C:\ffmpeg\Converted_Videos\%%~na.mp4
 
+# Notes
+1. Camera should be stationary. Use a tripod to mount the camera.
+2. Background should be glare and shadow free. Use diffuse indirect light to avoid shadow and glares. Do not use reflective background.
+3. Fill background carefully. You need to fill only the part which is from animal.
+4. Mark the area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding.
+
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
+Raise a issue or email in case if you need any help.
+$ Version 2 will be released soon. 
+
 
 
