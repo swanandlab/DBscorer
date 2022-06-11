@@ -33,7 +33,7 @@ Please check the sample videos to test and get an idea of the recording conditio
 
 It is always good to improve video quality during recording to avoid problems in detection.
 
-**Video Conversion**
+**Video Conversion and Downsampling**
 
 1. Download from the [ffmpeg](http://ffmpeg.org/) website.
 2. After installing check if below folder exists.
