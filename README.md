@@ -1,4 +1,8 @@
 # DBscorer
+
+Version 2 is coming this September with a few user friendly features. 
+
+
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
 Forces swim test and Tail suspension test automation
