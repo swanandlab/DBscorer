@@ -2,7 +2,7 @@
 
 Version 2 is coming this September with a few user friendly features. 
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/DBscorer V2 FST Correlation Plot.jpg?raw=true)
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/DBscorer V2 FST Correlation Plot.jpg?raw=true)
 
 
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
