@@ -1,7 +1,7 @@
 # DBscorer
 
 Version 2 Validation results. 
-Code, Executable file and Manual for version 2 will be uploaded by September end.
+Code, Executable file and Manual for version 2 will be uploaded soon. 
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
 
