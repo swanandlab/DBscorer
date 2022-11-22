@@ -1,7 +1,7 @@
 # DBscorer
 
 Version 2 Validation results. 
-Read the github wiki for DBscorerV2 use. This version is more user friendly. 
+Read the github wiki for DBscorerV2 use. This version is more user friendly. Contact us if you face any problem in using it. 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
