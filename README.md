@@ -14,7 +14,7 @@ We have improved the performance and ease of use for DBscorer. Read the github [
 
 https://user-images.githubusercontent.com/50400250/208101760-f8a40a08-d0d4-4bca-9ee2-a7c7877ef733.mp4
 
-**DBscorer V2 use **
+**DBscorer V2 use**
 
 https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-85fa-4e3f4e038780.mp4
 
