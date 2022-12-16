@@ -1,0 +1,1 @@
+for %%a in ("*.*") do ffmpeg -i "%%a" -c:v libx264 -crf 20 -r 30 "Output/%%~na.mp4"
