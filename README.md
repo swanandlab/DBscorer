@@ -9,18 +9,6 @@ We have improved the performance and ease of use for DBscorer. Read the github w
 
 ![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
 
-**Demo DBscorer**
-
-https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
-
-**Instructions**
-
-1. Download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip)) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
-NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
-
-2. Run DBscorer.exe.
-
-Please check the sample videos to test and get an idea of the recording condition.
 
 Please check the Wiki for DBscorer V2 instructions.
 
@@ -58,7 +46,19 @@ C:\ffmpeg\Converted_Videos
 4. Put the videos in a folder along with ffmpeg_convert.bat file.
 5. Double click to start conversion.
 
+# DBscorer Use
+**Demo DBscorer use**
 
+https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
+
+**Instructions**
+
+1. Download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip)) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
+NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
+
+2. Run DBscorer.exe.
+
+Please check the sample videos to test and get an idea of the recording condition.
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
