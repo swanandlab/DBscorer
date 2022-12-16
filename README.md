@@ -4,13 +4,11 @@ Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scor
 
 Forced swim test and Tail suspension test automation
 
-We have improved the performance and ease of use for DBscorer. Read the github [wiki](https://github.com/swanandlab/DBscorer/wiki) for DBscorerV2 use. This version is more user friendly. Contact us if you face any problem in using it. 
+We have improved the performance and ease of use for DBscorer. Read the github [Wiki](https://github.com/swanandlab/DBscorer/wiki) for DBscorerV2 use. This version is more user friendly. Contact us if you face any problem in using it. 
 
 
 ![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
 
-
-Please check the Wiki for DBscorer V2 instructions.
 
 **Installation and Video Conversion**
 
