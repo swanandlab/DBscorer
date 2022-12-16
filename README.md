@@ -55,12 +55,6 @@ C:\ffmpeg\Converted_Videos
 4. Put the videos in a folder along with ffmpeg_convert.bat file.
 5. Double click to start conversion.
 
-Alternatively you can drag and drop files on the batch file to start conversion.
-You can edit the .bat file in notepad.
-You can also create the .bat file by pasting the below line in notepad and saving it as .bat file.
-
-for %%a in ("*.*") do C:\ffmpeg\ffmpeg -i "%%a" -codec:v libx264 -crf 20 -vf scale=480:-1 -r 15 -an "C:\ffmpeg\Converted_Videos\%%~na.mp4
-
 
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
