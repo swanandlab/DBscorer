@@ -2,7 +2,7 @@
 
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
-Forces swim test and Tail suspension test automation
+Forced swim test and Tail suspension test automation
 
 We have improved the performance and ease of use for DBscorer. Read the github wiki for DBscorerV2 use. This version is more user friendly. Contact us if you face any problem in using it. 
 
@@ -75,7 +75,7 @@ Validation Results of DBscorer V2
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20BA%20Plot.jpg?raw=true)
 
-
+It is also possible to detect activity of single housed rodent if you have recorded long video (Not shown with data but in principle its the same). 
 
 
 
