@@ -2,14 +2,6 @@
 
 Read the github wiki for DBscorerV2 use. This version is more user friendly. Contact us if you face any problem in using it. 
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20Correlation%20Plot.jpg?raw=true)
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20BA%20Plot.jpg?raw=true)
-
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
 Forces swim test and Tail suspension test automation
@@ -70,6 +62,17 @@ C:\ffmpeg\Converted_Videos
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
 Email us in case if you need any help.
+
+Validation Results of DBscorer V2
+
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20Correlation%20Plot.jpg?raw=true)
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20BA%20Plot.jpg?raw=true)
 
 
 
