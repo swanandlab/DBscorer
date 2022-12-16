@@ -1,8 +1,7 @@
 # DBscorer
 
-
 Read the github wiki for DBscorerV2 use. This version is more user friendly. Contact us if you face any problem in using it. 
-Converting to MP4 is necessary but downsampling is not necessary in DBscorerV2. 
+
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
@@ -17,7 +16,7 @@ Forces swim test and Tail suspension test automation
 
 ![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
 
-**Demo**
+**Demo DBscorer**
 
 https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
 
@@ -30,6 +29,17 @@ NOTE: You will need administrator rights to run the MATLAB Runtime installer.
 
 Please check the sample videos to test and get an idea of the recording condition.
 
+Please check the Wiki for DBscorer V2 instructions.
+
+**Demo Installation and Video Conversion**
+
+https://user-images.githubusercontent.com/50400250/208101760-f8a40a08-d0d4-4bca-9ee2-a7c7877ef733.mp4
+
+**Demo DBscorer V2 use**
+
+https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-85fa-4e3f4e038780.mp4
+
+
 [TST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/TST%20Sample%20Video.mp4)
 
 [FST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/FST%20SAMPLE%20VIDEO.mp4)
@@ -40,7 +50,7 @@ Please check the sample videos to test and get an idea of the recording conditio
 2. Background should be glare and shadow free. Use diffuse indirect light to avoid shadow and glares. Do not use reflective background.
 3. Fill background carefully. You need to fill only the part which is from animal.
 4. Crop a rectangular area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding. See the demo video.
-5. Currently, DBscorer is limited by size of the video. Please convert or downsample the video in such cases.
+5. DBscorer is limited by size of the video. Please convert or downsample the video in such cases. (Fixed in DBscorer V2) 
 6. Video should be in constant frame rate. If not then convert using ffmpeg or any software that you like.
 
 It is always good to improve video quality during recording to avoid problems in detection.
@@ -59,9 +69,7 @@ C:\ffmpeg\Converted_Videos
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
-Raise a issue or email in case if you need any help.
-
-Version 2 will be released soon.
+Email us in case if you need any help.
 
 
 
