@@ -12,11 +12,11 @@ We have improved the performance and ease of use for DBscorer. Read the github w
 
 Please check the Wiki for DBscorer V2 instructions.
 
-**Demo Installation and Video Conversion**
+**Installation and Video Conversion**
 
 https://user-images.githubusercontent.com/50400250/208101760-f8a40a08-d0d4-4bca-9ee2-a7c7877ef733.mp4
 
-**Demo DBscorer V2 use**
+**DBscorer V2 use **
 
 https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-85fa-4e3f4e038780.mp4
 
@@ -47,7 +47,7 @@ C:\ffmpeg\Converted_Videos
 5. Double click to start conversion.
 
 # DBscorer Use
-**Demo DBscorer use**
+**DBscorer use**
 
 https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
 
