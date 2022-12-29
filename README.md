@@ -34,6 +34,14 @@ https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-
 
 It is always good to improve video quality during recording to avoid problems in detection.
 
+
+# DBscorer Use
+**DBscorer use**
+
+https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
+
+**Instructions**
+
 **Video Conversion and Downsampling**
 
 1. Download from the [ffmpeg](http://ffmpeg.org/) website.
@@ -43,13 +51,6 @@ C:\ffmpeg\ffmpeg
 C:\ffmpeg\Converted_Videos
 4. Put the videos in a folder along with ffmpeg_convert.bat file.
 5. Double click to start conversion.
-
-# DBscorer Use
-**DBscorer use**
-
-https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
-
-**Instructions**
 
 1. Download and install the Windows version 9.9 ([R2020b](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/5/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_5_win64.zip)) of the MATLAB Runtime for R2020b  from the following link on the [MathWorks website](https://www.mathworks.com/products/compiler/mcr/index.html)
 NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
