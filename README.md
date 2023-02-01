@@ -1,6 +1,6 @@
 # DBscorer
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/DBscorerV2%20UI.svg?raw=true)
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/V2.pdf?raw=true)
 
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
