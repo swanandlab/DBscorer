@@ -43,17 +43,29 @@ It is always good to improve video quality during recording to avoid problems in
 # DBscorerV2 
 
 Load Video: Convert the videos to a constant frame rate video in a MATLAB-supported video format. Use ffmpeg as described. You may downsample the video if needed. You can select one video file at a time for processing.
+
 Create Background: You can create a background for the video using this. In most cases, the background will include pixels from animals.
+
 Fix Background: To fix the background, select the area generated from animal pixels, as shown in the demo video.
+
 Figure Window: This button creates a window showing an image of a video frame. If you accidentally close the figure window, changing the start(s) won't show any video frame. In this case, use the figure window to create the window where the video frame will be shown and then change the start(s).
+
 Start (s) and End (s): Use this to define the start and End of the video analysis and show the frame.
+
 Info: Before marking your ROI, you can enter the information here about the animal.
+
 Mark ROI: For TST and FST, select the area where the animal remains for the analysis period. The animal should not get outside. After selection, you will get suggestions for a binary threshold value.
+
 Process Video: Process video using this. You can repeat the steps to process all the videos. Then compile data later by selecting all the files together. You can use the cancel button to stop processing it.
+
 Manual Scoring: Do manual scoring to determine an optimal threshold. Do the manual scoring as shown for 3-4 min video for 3-4 min to get an optimum threshold value for the whole batch of similarly recorded videos. The setup remains the same for all the recordings (light, background, etc.)
+
 Clip: Clip value removes periods of state switching. A clip value of 1  will clip data from pre and post-transition while determining the optimal threshold. Doing this accounts for the delay in changing the toggle button.
+
 Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a data file with optimum threshold value and accuracy for the data.
+
 Compile: Once you process all the videos, you can select all the .mat files generated from the process video. It will generate an excel sheet containing all the data together. It ignores the mat file from the manual analysis and compiles only the .mat files generated from the process video.
+
 Compile Manual: Once you finish scoring all the videos manually, you can select all the .mat files ending with the manual. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring.
 
 **Sample Videos**
