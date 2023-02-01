@@ -1,7 +1,5 @@
 # DBscorer
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/V2.pdf?raw=true)
-
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring )
 
 Forced swim test and Tail suspension test automation
