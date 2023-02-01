@@ -6,7 +6,18 @@
 
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring ). Forced swim test and Tail suspension test automation. 
 
-We have improved the performance and ease of use for DBscorer. DBscorerV2 is more user friendly. We recommend the use of DBscorerV2.  Contact us if you face any problem in using it. 
+We have improved the performance and ease of use for DBscorer. DBscorerV2 is more user friendly. We recommend the use of **DBscorerV2**.  Contact us if you face any problem in using it. 
+
+
+# Validation Results of DBscorer V2
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20Correlation%20Plot.jpg?raw=true)
+
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20BA%20Plot.jpg?raw=true)
 
 Installation:
 
@@ -38,7 +49,13 @@ https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-
 5. DBscorer is limited by size of the video. Please convert or downsample the video in such cases. (Fixed in DBscorer V2) 
 6. Video should be in constant frame rate. If not then convert using ffmpeg or any software that you like.
 
-It is always good to improve video quality during recording to avoid problems in detection.
+It is always good to improve video quality during recording to avoid problems in detection. Please check the sample videos to test and get an idea of the recording condition.
+
+**Sample Videos**
+
+[TST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/TST%20Sample%20Video.mp4)
+
+[FST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/FST%20SAMPLE%20VIDEO.mp4)
 
 **Video Pre-Processing** 
 
@@ -80,16 +97,19 @@ Compile: Once you process all the videos, you can select all the .mat files gene
 
 Compile Manual: Once you finish scoring all the videos manually, you can select all the .mat files ending with the manual. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring.
 
-**Sample Videos**
-
-[TST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/TST%20Sample%20Video.mp4)
-
-[FST Sample Video](https://github.com/swanandlab/DBscorer/blob/main/FST%20SAMPLE%20VIDEO.mp4)
 
 
 
-# DBscorer Use
-**DBscorer use**
+
+
+# Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
+Please cite the paper if you use the code for analysis.
+Email us in case if you need any help.
+
+
+
+# Old DBscorer Use
+**Old DBscorer use**
 
 https://user-images.githubusercontent.com/50400250/162684979-b73db491-5611-4084-90a7-02341f676408.mp4
 
@@ -110,21 +130,6 @@ NOTE: You will need administrator rights to run the MATLAB Runtime installer.
 
 2. Run DBscorer.exe.
 
-Please check the sample videos to test and get an idea of the recording condition.
-
-# Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
-Please cite the paper if you use the code for analysis.
-Email us in case if you need any help.
-
-#Validation Results of DBscorer V2
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20Correlation%20Plot.jpg?raw=true)
-
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20BA%20Plot.jpg?raw=true)
 
 
 
