@@ -40,6 +40,18 @@ https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-
 
 It is always good to improve video quality during recording to avoid problems in detection.
 
+**Video Pre-Processing** 
+
+This can be easily done using [ffmpeg](https://www.gyan.dev/ffmpeg/builds/) software.
+ 
+1. Create a folder and name it "_Convert_".
+
+2. Place the convert.bat file, ffmpeg.exe and all videos in the same folder.
+
+3. Create a subfolder in "_Convert_" and name it "_Output_".
+
+4. Double click the "_Convert.bat_" file to start conversion. 
+
 # DBscorerV2 
 
 Load Video: Convert the videos to a constant frame rate video in a MATLAB-supported video format. Use ffmpeg as described. You may downsample the video if needed. You can select one video file at a time for processing.
