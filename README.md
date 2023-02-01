@@ -21,7 +21,7 @@ We have improved the performance and ease of use for DBscorer. DBscorerV2 is mor
 
 Installation:
 
-Windows (Tested in different system configuration):
+Windows (Tested):
 
 1. Install the MATLAB runtime [9.10](https://ssd.mathworks.com/supportfiles/downloads/R2021a/Release/7/deployment_files/installer/complete/win64/MATLAB_Runtime_R2021a_Update_7_win64.zip) first.
 
