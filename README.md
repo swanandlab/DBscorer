@@ -87,7 +87,7 @@ Mark ROI: For TST and FST, select the area where the animal remains for the anal
 
 Process Video: Process video using this. You can repeat the steps to process all the videos. Then compile data later by selecting all the files together. You can use the cancel button to stop processing it.
 
-Manual Scoring: Do manual scoring to determine an optimal threshold. Do the manual scoring as shown for 3-4 min video for 3-4 min to get an optimum threshold value for the whole batch of similarly recorded videos. The setup remains the same for all the recordings (light, background, etc.)
+Manual Scoring: Do manual scoring either to determine an optimal threshold or you want to do manual analysis in a more detailed fashion than using a stopwatch. Do the manual scoring as shown for 3-4 min video for 3-4 min to get an optimum threshold value for the whole batch of similarly recorded videos. The setup remains the same for all the recordings (light, background, etc.)
 
 Clip: Clip value removes periods of state switching. A clip value of 1  will clip data from pre and post-transition while determining the optimal threshold. Doing this accounts for the delay in changing the toggle button.
 
