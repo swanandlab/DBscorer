@@ -4,9 +4,9 @@
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/DBscorerV2UI.png?raw=true)
 
-Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring ). Forced swim test and Tail suspension test automation. 
+Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring ).
 
-We have improved the performance and ease of use for DBscorer. DBscorerV2 is more user friendly. We recommend the use of **DBscorerV2**.  Contact us if you face any problem in using it. 
+We've enhanced DBscorer's functionality and usability. We advise using **DBscorerV2**. If you run into any issues while using it, get in touch with us. 
 
 
 # Validation Results of DBscorer V2
@@ -29,7 +29,7 @@ Windows (Tested):
 
 Mac (Not tested):
 
-Use DBscorerV2 exported. You will probably need MATLAB2020b.
+Make use of DBscorerV2 exported. MATLAB 2020b will probably be required.
 
 
 **DBscorer V2: Installation and Video Conversion**
@@ -42,14 +42,13 @@ https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-
 
 
 # Notes
-1. Camera should be stationary. Use a tripod to mount the camera.
-2. Background should be glare and shadow free. Use diffuse indirect light to avoid shadow and glares. Do not use reflective background.
-3. Fill background carefully. You need to fill only the part which is from animal.
-4. Crop a rectangular area such that all parts of animal will inside the the selected region while avoiding unnessesary surrounding. See the demo video.
-5. DBscorer is limited by size of the video. Please convert or downsample the video in such cases. (Fixed in DBscorer V2) 
-6. Video should be in constant frame rate. If not then convert using ffmpeg or any software that you like.
+1. Mount the camera using a tripod.
+2. The background should be free of glare and shadows. To prevent shadows and glares, use diffuse indirect light. Use a non-shiny background.
+4. Crop a rectangular area so that all animal parts are contained within it while avoiding the surrounding area. View the demo video.
+5. The size of the video imposes restrictions on DBscorer. In such cases, downsample or convert the video. (Issue is fixed in DBscorer V2).
+6. Video should have a constant frame rate. If not, then convert with ffmpeg or any other program you prefer.
 
-It is always good to improve video quality during recording to avoid problems in detection. Please check the sample videos to test and get an idea of the recording condition.
+To prevent issues with detection, it is always a good idea to enhance video quality while recording. To test and get a sense of the recording conditions, kindly view the sample videos.
 
 **Sample Videos**
 
@@ -132,8 +131,9 @@ NOTE: You will need administrator rights to run the MATLAB Runtime installer.
 
 
 
+# Detecting Animal Activity in Long Video
 
-It is also possible to detect activity of single housed rodent if you have recorded long video (Not shown with data but in principle its the same). 
+If you have a long video recorded, it is also possible to detect animal activity (not shown with data, but the concept is the same).
 
 
 
