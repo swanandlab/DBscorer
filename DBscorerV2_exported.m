@@ -738,6 +738,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 ExptEndTime=(EndFrame/fps);
                 T1=table(Immobility_Percentage,Immobility_latency,Longest_bout,Number_of_bouts,...
                     startsec,endsec,ExptStartTime,ExptEndTime,Minimumchange,Threshold,Binsize,Bins);
+                writetable(T1,[file,' Results Auto.csv']);
                 writematrix(Y,[file,' Auto .txt'])
                 FileNames=[FileNames;{file(1:end)}];
                 AllData=[AllData;T1];
@@ -748,7 +749,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             end
             T2=table(FileNames);
             CombinedData=[T2,AllData];
-            writetable(CombinedData,' Results Auto.csv');
+            writetable(CombinedData,' Results Auto Compiled.csv');
 
         end
 
@@ -761,7 +762,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 % If user clicked the Cancel button.
                 return;
             end
-            %cd(pathname)
+            cd(pathname)
             filenames=filenames';
             %% Variables
             FileNames=[];
@@ -792,7 +793,11 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 load(file)
                 startframe=( startsec*fps)+1;
                 endframe=(endsec*fps)+1;
+                if endframe<length(im2)
                 im2=im2(startframe:endframe);
+                else
+                im2=im2(startframe:length(im2));
+                end
                 rc =length(im2)- rem(length(im2),fps);
                 Rc=im2(1:rc);
                 binc = reshape(Rc,fps,[]);
@@ -859,14 +864,14 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 %set(gcf, 'Position', get(0,'Screensize')); % Maximize figure
                 xlabel('Time (second)')
                 box on
-                saveas(gcf,[file,' Raster.png'])
+                saveas(gcf,[file,' Raster Manual.png'])
                 hold off
                 figure
                 image(abs(100-Bins))
                 colormap(gray(100))
                 colorbar
                 yticks([])
-                xlabel('Binned Immobility (Darker)')
+                xlabel('Binned Immobility (Darker) Manual')
                 pbaspect([length(Bins) length(Bins)/10 1])
                 ax = gca;
                 ax.Color = 'none';
@@ -875,11 +880,9 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 ax.TickLength = [.005 0.035];
                 ax.LineWidth=2;
                 ax.XTick = 1:1:length(Y);
-                saveas(gcf,[file,'Binned ','.png'])
-                
+                saveas(gcf,[file,'Binned Manual','.png'])
                 T1=table(Immobility_Percentage,Immobility_latency,Longest_bout,Number_of_bouts,...
                     startsec,endsec,Minimumchange,Threshold,Binsize,Bins);
-                
                 writetable(T1,[file,' Results Manual.csv']);
                 FileNames=[FileNames;{file(1:end)}];
                 writematrix(Y,[file,' Manual.txt'])
@@ -891,7 +894,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             end
             T2=table(FileNames);
             CombinedData=[T2,AllData];
-            writetable(CombinedData,' Results Manual.csv');
+            writetable(CombinedData,' Results Manual Compiled.csv');
 
         end
 
@@ -1054,7 +1057,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.AreaThreshold.Limits = [0 Inf];
             app.AreaThreshold.Tooltip = {'Optional'};
             app.AreaThreshold.Position = [311 143 45 23];
-            app.AreaThreshold.Value = 2.6;
+            app.AreaThreshold.Value = 0.65;
 
             % Create TimeThresholdsLabel
             app.TimeThresholdsLabel = uilabel(app.Tool);
@@ -1068,6 +1071,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.TimeThresh.RoundFractionalValues = 'on';
             app.TimeThresh.Tooltip = {'Optional'};
             app.TimeThresh.Position = [311 225 45 23];
+            app.TimeThresh.Value = 1;
 
             % Create CompileAuto
             app.CompileAuto = uibutton(app.Tool, 'push');
