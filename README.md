@@ -23,7 +23,7 @@ Installation:
 
 Windows (Tested):
 
-1. Install the MATLAB runtime [9.10](https://ssd.mathworks.com/supportfiles/downloads/R2021a/Release/7/deployment_files/installer/complete/win64/MATLAB_Runtime_R2021a_Update_7_win64.zip) first.
+1. Install the MATLAB runtime [9.9](https://ssd.mathworks.com/supportfiles/downloads/R2020b/Release/8/deployment_files/installer/complete/win64/MATLAB_Runtime_R2020b_Update_8_win64.zip) first.
 
 2. Click the [DBscorerV2](https://github.com/swanandlab/DBscorer/blob/main/DBscorerV2.exe) app to launch the GUI.
 
