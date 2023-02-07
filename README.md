@@ -29,12 +29,7 @@ Windows (Tested):
 
 Mac (Not tested):
 
-Make use of DBscorerV2 exported. MATLAB 2020b will probably be required.
-
-
-**DBscorer V2: Installation and Video Conversion**
-
-https://user-images.githubusercontent.com/50400250/208101760-f8a40a08-d0d4-4bca-9ee2-a7c7877ef733.mp4
+Make use of DBscorerV2 exported. 
 
 **DBscorer V2:  Use**
 
