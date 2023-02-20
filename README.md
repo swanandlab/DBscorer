@@ -13,11 +13,8 @@ We've enhanced DBscorer's functionality and usability. We advise using **DBscore
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20BA%20Plot.jpg?raw=true)
-
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20Correlation%20Plot.jpg?raw=true)
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/TST%20BA%20Plot.jpg?raw=true)
 
 Installation:
 
@@ -27,9 +24,9 @@ Windows (Tested):
 
 2. Click the [DBscorerV2](https://github.com/swanandlab/DBscorer/blob/main/DBscorerV2.exe) app to launch the GUI.
 
-Mac (Not tested):
+Mac (Need MATLAB):
 
-Make use of DBscorerV2 exported. 
+Use DBscorerV2 exported.m file. 
 
 **DBscorer V2:  Use**
 
@@ -67,13 +64,13 @@ This can be easily done using [ffmpeg](https://www.gyan.dev/ffmpeg/builds/) soft
 
 Load Video: Convert the videos to a constant frame rate video in a MATLAB-supported video format. Use ffmpeg as described. You may downsample the video if needed. You can select one video file at a time for processing.
 
-Create Background: You can create a background for the video using this. In most cases, the background will include pixels from animals.
+Start (s) and End (s): Use this to define the start and End of the video analysis and show the frame.
+
+Create Background: You can create a background for selected part of video using this. You can select a start and end such that you get a clean background.
 
 Fix Background: To fix the background, select the area generated from animal pixels, as shown in the demo video.
 
-Figure Window: This button creates a window showing an image of a video frame. If you accidentally close the figure window, changing the start(s) won't show any video frame. In this case, use the figure window to create the window where the video frame will be shown and then change the start(s).
-
-Start (s) and End (s): Use this to define the start and End of the video analysis and show the frame.
+Figure Window: This button creates a window for showing an image of a video frame. If you accidentally close the figure window, changing the start(s) won't show any video frame. In this case, use the figure window to create the window where the video frame will be shown and then change the start(s).
 
 Info: Before marking your ROI, you can enter the information here about the animal.
 
@@ -81,18 +78,15 @@ Mark ROI: For TST and FST, select the area where the animal remains for the anal
 
 Process Video: Process video using this. You can repeat the steps to process all the videos. Then compile data later by selecting all the files together. You can use the cancel button to stop processing it.
 
-Manual Scoring: Do manual scoring either to determine an optimal threshold or you want to do manual analysis in a more detailed fashion than using a stopwatch. Do the manual scoring as shown for 3-4 min video for 3-4 min to get an optimum threshold value for the whole batch of similarly recorded videos. The setup remains the same for all the recordings (light, background, etc.)
+Manual Scoring: Do manual scoring either to determine an optimal threshold or you want to do manual analysis in a more detailed fashion than using a stopwatch. Do the manual scoring as shown for 3-4 min video for 3-4 min to get an optimum threshold value for the whole batch of similarly recorded videos. The setup remains the same for all the recordings (light, background, etc.). We generally select first 2 mintute and last 2 minute video of all animal in the video for scoring (4 animal mostly). 
 
 Clip: Clip value removes periods of state switching. A clip value of 1  will clip data from pre and post-transition while determining the optimal threshold. Doing this accounts for the delay in changing the toggle button.
 
-Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a data file with optimum threshold value and accuracy for the data.
+Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a data file with optimum threshold value and AUC, precision and recall for the threshold ( Higher the better).
 
-Compile: Once you process all the videos, you can select all the .mat files generated from the process video. It will generate an excel sheet containing all the data together. It ignores the mat file from the manual analysis and compiles only the .mat files generated from the process video.
+Compile Manual: Once you finish scoring all the videos manually, you can select all the .mat files ending with the manual. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring. It will also generate a raster plot in order that is there in excel sheet.
 
-Compile Manual: Once you finish scoring all the videos manually, you can select all the .mat files ending with the manual. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring.
-
-
-
+Compile: Once you process all the videos, you can select all the .mat files generated from the process video. It will generate an excel sheet containing all the data together. It ignores the mat file from the manual analysis and compiles only the .mat files generated from the process video. It will also generate a raster plot in order that is there in excel sheet.
 
 
 
