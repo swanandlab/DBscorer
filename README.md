@@ -2,7 +2,7 @@
 
 ![No of Visits](https://visitor-badge.laobi.icu/badge?page_id=swanandlab/DBscorer)
 
-![alt text](https://github.com/swanandlab/DBscorer/blob/main/V2.pdf?raw=true)
+![alt text](https://github.com/swanandlab/DBscorer/blob/main/V2.png?raw=true)
 
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring ).
 
