@@ -1,4 +1,4 @@
-classdef DBscorerV2_exported < matlab.apps.AppBase
+classdef DBscorerV200222023_exported < matlab.apps.AppBase
 
     % Properties that correspond to app components
     properties (Access = public)
@@ -13,8 +13,6 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
         Time                 matlab.ui.control.NumericEditField
         ProcessVideo         matlab.ui.control.Button
         FixBackground        matlab.ui.control.Button
-        BinarizeLabel        matlab.ui.control.Label
-        BinaryThreshold      matlab.ui.control.Spinner
         EnterInfo            matlab.ui.control.EditField
         CreateBackground     matlab.ui.control.Button
         ManualScoring        matlab.ui.control.Button
@@ -37,9 +35,10 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
         TimeBinsLabel        matlab.ui.control.Label
         TimeBin              matlab.ui.control.NumericEditField
         FigWindow            matlab.ui.control.Button
+        DBscorerV2Label      matlab.ui.control.Label
     end
 
-    
+
     properties (Access = public)
         v % Video
         changingValue1 % Video analysis start time
@@ -59,7 +58,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
         ar
         cord
     end
-    
+
 
     % Callbacks that handle component events
     methods (Access = private)
@@ -130,9 +129,11 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             medfilt=3;
             BackgroundCropped=imcrop(app.Background,app.crop);
             ClearOutsideMaskCropped=imcrop(app.ClearOutsideMask,app.crop);
+            [~,n,~]=size(BackgroundCropped);
+            rescale=(300/n);
             % Average
             fps=app.v.FrameRate;
-            wanted_frames=floor(2*fps);
+            wanted_frames=floor(5*fps);
             a = app.changingValue1*app.v.FrameRate;
             b = app.changingValue2*app.v.FrameRate;
             x= floor((b-a).*rand(wanted_frames,1) + a);
@@ -146,8 +147,9 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                     frame=read(app.v,indices(k));
                     gray =rgb2gray(frame);
                     gray=imcrop(gray,app.crop);
-                    MaskedImage = medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]);
-                    MaskedImage(~ClearOutsideMaskCropped) = 1;
+                    MaskedImage = imgaussfilt(medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]),3);
+                    MaskedImage = adapthisteq(MaskedImage,'clipLimit',0.005,'Distribution','rayleigh');
+                    MaskedImage=imresize(MaskedImage,rescale);
                     level = graythresh(MaskedImage);
                     binarythresh=[binarythresh,level];
                 end
@@ -155,27 +157,29 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 for k=1:length(x)
                     gray=read(app.v,indices(k));
                     gray=imcrop(gray,app.crop);
-                    MaskedImage = medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]);
-                    MaskedImage(~ClearOutsideMaskCropped) = 1;
+                    MaskedImage = imgaussfilt(medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]),3);
+                    MaskedImage = adapthisteq(MaskedImage,'clipLimit',0.005,'Distribution','rayleigh');
+                    MaskedImage=imresize(MaskedImage,rescale);
                     level = graythresh(MaskedImage);
                     binarythresh=[binarythresh,level];
                 end
             end
-            MaskedImage = medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]);
-            MaskedImage(~ClearOutsideMaskCropped) = 1;
+            MaskedImage = imgaussfilt(medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]),3);
+            MaskedImage = adapthisteq(MaskedImage,'clipLimit',0.005,'Distribution','rayleigh');
+            MaskedImage=imresize(MaskedImage,rescale);
+            gray=imresize(gray,rescale);
             bint = mean(binarythresh);
-            app.BinaryThreshold.Value=round(bint*100);
             app.T=round(bint*100);
             MaskedBinary=imbinarize(MaskedImage,(app.T/100));
-            B = labeloverlay(gray,MaskedBinary,'Colormap','winter','Transparency',0.10);
-            set(app.hImage, 'CData',B)
             imshow(app.show1)
             Animal=drawpolygon('Position',thisROI,'LineWidth',.1,'FaceAlpha',.10,'Color','r','MarkerSize',.1);
             fig=gcf;
             exportgraphics(fig,[[app.EnterInfo.Value],' ',[app.filename],'.tif'],'Resolution',300)
             close
-            app.hImage=imshow(Ic);
+            app.hImage=imshow(gray);
+            B = labeloverlay(gray,MaskedBinary,'Colormap','hsv','Transparency',0.75);
             set(app.hImage, 'CData',B)
+            axis on
             app.MarkROI.Text='Mark ROI';
             app.MarkROI.BackgroundColor='g';
             app.ProcessVideo.BackgroundColor='w';
@@ -211,32 +215,37 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
 
         % Button pushed function: ProcessVideo
         function ProcessVideoButtonPushed(app, event)
+            close
             app.Cancel.Value=0;
             medfilt=3;
-            app.T=app.BinaryThreshold.Value;
             app.ProcessVideo.BackgroundColor='Yellow';
             app.Play.BackgroundColor='w';
             app.StateButton.BackgroundColor='w';
             BackgroundCropped=imcrop(app.Background,app.crop);
-            ClearOutsideMaskCropped=imcrop(app.ClearOutsideMask,app.crop);
             clear cr
             A=size(BackgroundCropped);
             app.cr = struct('cdata',zeros(A(1),A(2),1,'uint8'),...
                 'colormap',[]);
             StartFrame=floor(app.changingValue1*app.v.FrameRate)+1;
             EndFrame=floor(app.changingValue2*app.v.FrameRate);
+            totaltime=(EndFrame-StartFrame);
+            [~,n,~]=size(BackgroundCropped);
+            rescale=(300/n);
             app.ar=[];
+            cf=-2;
             for k=StartFrame:1:EndFrame+1
+                cf=cf+1;
                 app.Time.Value=floor(k/app.v.FrameRate);
-                %app.Time.Value=((endtime-floor(k/app.v.FrameRate))/totaltime)*100;
+                %app.Time.Value=(cf/totaltime)*100;
                 pause(.0001)
                 if app.Cancel.Value==1
                     break
                 end
                 frame=rgb2gray(read(app.v,k));
                 RandomFrame = imcrop(frame,app.crop);
-                MaskedImage = medfilt2(imabsdiff(BackgroundCropped,(RandomFrame)),[medfilt,medfilt]);
-                MaskedImage(~ClearOutsideMaskCropped) = 1;
+                MaskedImage = imgaussfilt(medfilt2(imabsdiff(BackgroundCropped,RandomFrame),[medfilt,medfilt]),3);
+                MaskedImage = adapthisteq(MaskedImage,'clipLimit',0.005,'Distribution','rayleigh');
+                MaskedImage=imresize(MaskedImage,rescale);
                 MaskedBinary=imbinarize(MaskedImage,(app.T/100));
                 All=sum(MaskedBinary,'all');%
                 app.ar=[app.ar,All];%
@@ -267,37 +276,14 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.hImage=imshow(app.Background);
             app.FixBackground.Text='Fix More Background';
             app.FixBackground.BackgroundColor='g';
-            
-        end
 
-        % Value changing function: BinaryThreshold
-        function BinaryThresholdValueChanging(app, event)
-            changingValue3 = event.Value;
-            medfilt=3;
-            app.T=changingValue3;
-            BackgroundCropped=imcrop(app.Background,app.crop);
-            ClearOutsideMaskCropped=imcrop(app.ClearOutsideMask,app.crop);
-            Ic=imcrop(app.show1,app.crop);
-            app.hImage=imshow(Ic);
-            [~,~,o]=size(Ic);
-            % if rgb then convert to grayscale
-            if o==3
-                gray=rgb2gray(Ic);
-            else
-                gray=Ic;
-            end            
-                MaskedImage = medfilt2(imabsdiff(BackgroundCropped,(gray)),[medfilt,medfilt]);
-                MaskedImage(~ClearOutsideMaskCropped) = 1;
-                MaskedBinary=imbinarize(MaskedImage,(app.T/100));
-            B = labeloverlay(Ic,MaskedBinary,'Colormap','winter','Transparency',0.10);
-            set(app.hImage, 'CData',B)
         end
 
         % Button pushed function: CreateBackground
         function CreateBackgroundButtonPushed(app, event)
             app.v = VideoReader(app.video);
             fps=app.v.FrameRate;
-            wanted_frames=floor(2*fps);
+            wanted_frames=floor(1*fps);
             a = app.changingValue1*app.v.FrameRate;
             b = app.changingValue2*app.v.FrameRate;
             x= floor((b-a).*rand(wanted_frames,1) + a);
@@ -345,7 +331,13 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             EndFrame=floor(app.changingValue2*app.v.FrameRate);
             Full=EndFrame-StartFrame+2;
             im2 = zeros(Full,1);
+            BackgroundCropped=imcrop(app.Background,app.crop);
+            [~,n,~]=size(BackgroundCropped);
+            width=round(300*0.05);
+            rescale=(300/n);
             I=imcrop(app.show1,app.crop);
+            I=imresize(I,rescale);
+            figure
             app.hImage=imshow(I);
             app.StateButton.Value=0;
             app.StateButton.Text='Immobile';
@@ -368,23 +360,27 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 if app.StateButton.Value==1
                     app.StateButton.BackgroundColor='G';
                     app.StateButton.Text='Mobile';
+                    c1=yline(width,'-g','LineWidth',width);
                     is=is+1;
                     im2(k+1-StartFrame)=1;
                 else
                     app.StateButton.BackgroundColor='M';
                     app.StateButton.Text='Immobile';
+                    c1=yline(width,'-m','LineWidth',width);
                     is=is+0;
                     im2(k+1-StartFrame)=0;
                 end
                 app.Time.Value=floor(k/app.v.FrameRate);
                 frame=read(app.v,k);
                 I=imcrop(frame,app.crop);
+                I=imresize(I,rescale);
                 set(app.hImage, 'CData', I)
                 frame_normalization = toc;
                 if frame_normalization < frame_by_frame_time_original
                     pause(frame_by_frame_time_original - frame_normalization);
                 end
                 tic
+                delete(c1)
             end
             hold off
             app.StateButton.Text='State';
@@ -414,6 +410,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             AllData=[];
             clip=app.Clip.Value;
             kfold=7;
+            fps=15
             %% Batch Processing
             FileNames=[];
             AllData=[];
@@ -421,9 +418,12 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 file=filenames{name}(1:end-4);
                 tf = strcmp(filenames{name}(end-9:end-4),'Manual');
                 if tf==1
-                    load(file)
+                    manual=filenames{name}(1:end-4)
+                    load(manual)
                     auto=[file(1:end-7),'.mat'];
+                    %auto=filenames{name}(1:end-11);
                     load(auto)
+                    %im2=im2==0; %only for old data remove it before uploading to git
                     rc =length(im2)- rem(length(im2),fps);
                     Rc=im2(1:rc);
                     binc = reshape(Rc,fps,[]);
@@ -439,7 +439,6 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                     R_ar=AreaChangePercent(1:r_ar);
                     bin_ar = reshape(R_ar,fps,[]);
                     Area_Change=mean(bin_ar,1);
-                    % velocity %
                     FileNames=[FileNames;{file(1:end)}];
                     T1=table(GT(2:end)',Area_Change');
                     AllData=[AllData;T1];
@@ -461,7 +460,6 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
                 GT(runstartsc(i):runendsc(i))=1;
             end
             rasterc=sort([0,runstartsc,runendsc,Tillc]);
-            %%
             clipped_Manual_score=GT;
             clipped_area_change=Area_Change;
             if clip>0
@@ -479,120 +477,135 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             s=min(length(clipped_Manual_score),length(clipped_area_change));
             TrainData=[clipped_Manual_score(1:s),clipped_area_change(1:s)];
             % shuffle the data
-            dp=s;
-            idx= floor((s-1).*rand(dp,1) + 1);
-            % k divide
-            if  mod(s,kfold)>0
-                blocksize=floor(s/kfold);
-            else
-                blocksize=floor(s/kfold)-1;
-            end
-            % create valset testset
-            TrainSet=[];
-            ValSet=[];
             AveragedThreshold=[];
             AveragedAUC=[];
             AveragedAccuracy=[];
             AveragedPrecision=[];
             AveragedRecall=[];
-            for i=1: kfold-2
-                ValSet=TrainData(idx(blocksize*i:blocksize*i+blocksize),:);
-                TrainSet=TrainData;
-                TrainSet(idx(blocksize*i:blocksize*i+blocksize),:)=[];
-                % ROC based threshold determination
-                %figure % 0 for immobility
-                AreaChange=TrainSet(:,2);
-                IM=AreaChange(TrainSet(:,1)==1);
-                M=AreaChange(TrainSet(:,1)==0);
-                [~,edges] = histcounts(AreaChange',1000);
-                Nim = histcounts(IM,edges);
-                Nm = histcounts(M,edges);
-                NmPa=[]; % tpr
-                for i=1:length(Nm)
-                    Pm=(sum(Nm(i:length(Nm)))/sum(Nm));
-                    NmPa=[NmPa,Pm];
+            %AveragedMCC=[];
+            Thresholds=[];
+            Precisions=[];
+            Recalls=[];
+            dp=s;
+            for sfl=1:100
+                idx= floor((s-1).*rand(dp,1) + 1);
+                % k divide
+                if  mod(s,kfold)>0
+                    blocksize=floor(s/kfold);
+                else
+                    blocksize=floor(s/kfold)-1;
                 end
-                NimPa=[]; % fpr
-                for i=1:length(Nim)
-                    Pim=sum(Nim(i:length(Nim)))/sum(Nim);
-                    NimPa=[NimPa,Pim];
+                % create valset testset
+                TrainSet=[];
+                ValSet=[];
+                for i=1: kfold-2
+                    MCCs=[];
+                    ValSet=TrainData(idx(blocksize*i:blocksize*i+blocksize),:);
+                    TrainSet=TrainData;
+                    TrainSet(idx(blocksize*i:blocksize*i+blocksize),:)=[];
+                    % ROC based threshold determination
+                    AreaChange=TrainSet(:,2);
+                    IM=AreaChange(TrainSet(:,1)==1);
+                    M=AreaChange(TrainSet(:,1)==0);
+                    [~,edges] = histcounts(AreaChange',100);
+                    Nim = histcounts(IM,edges);
+                    Nm = histcounts(M,edges);
+                    NmPa=[]; % tpr
+                    for i=1:length(Nm)
+                        Pm=(sum(Nm(i:length(Nm)))/sum(Nm));
+                        NmPa=[NmPa,Pm];
+                    end
+                    NimPa=[]; % fpr
+                    for i=1:length(Nim)
+                        Pim=sum(Nim(i:length(Nim)))/sum(Nim);
+                        NimPa=[NimPa,Pim];
+                    end
+                    %CZ
+                    gmeansa=(NmPa.*(1-NimPa));
+                    ThresholdPa=(edges(gmeansa==max(gmeansa)));
+                    CalibratedThresholdMin=min(ThresholdPa);
+                    CalibratedThresholdMax=max(ThresholdPa);
+                    AUCa=abs(trapz(NimPa,NmPa));
+                    CalibratedThresholdValue = max(ThresholdPa);
+                    AveragedThreshold=[AveragedThreshold,CalibratedThresholdValue];
+                    AveragedAUC=[AveragedAUC,AUCa];
+                    % here calculate true positive, false positive, true negative, false
+                    % negative
+                    trueval=ValSet(:,1);
+                    predicted=ValSet(:,2)<CalibratedThresholdValue;
+                    TP=sum(trueval==1 & predicted==1);
+                    FP=sum(trueval==0 & predicted==1);
+                    TN=sum(trueval==0 & predicted==0);
+                    FN=sum(trueval==1 & predicted==0);
+                    Precision=TP/(TP+FP);
+                    Recall=TP/(TP+FN);
+                    AveragedPrecision=[AveragedPrecision,Precision];
+                    AveragedRecall=[AveragedRecall,Recall];
+                    % MCC based threshold determination
+                    for i=1:length(edges)
+                        th=edges(i);
+                        trueval=TrainSet(:,1);
+                        predicted=TrainSet(:,2)<th;
+                        TP=sum(trueval==1 & predicted==1);
+                        FP=sum(trueval==0 & predicted==1);
+                        TN=sum(trueval==0 & predicted==0);
+                        FN=sum(trueval==1 & predicted==0);
+                        MCC=((TP*TN)-(FP*FN))/sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN));
+                        MCCs=[MCCs,MCC];
+                    end
+                    ThresholdMCC=(edges(MCCs==max(MCCs)));
+                    ThresholdValue=max(ThresholdMCC);
+                    %true positive, false positive, true negative, false negative
+                    trueval=ValSet(:,1);
+                    predicted=ValSet(:,2)<ThresholdValue;
+                    TP=sum(trueval==1 & predicted==1);
+                    FP=sum(trueval==0 & predicted==1);
+                    TN=sum(trueval==0 & predicted==0);
+                    FN=sum(trueval==1 & predicted==0);
+                    Precision=TP/(TP+FP);
+                    Recall=TP/(TP+FN);
+                    Precisions=[Precisions,Precision];
+                    Recalls=[Recalls,Recall];
+                    Thresholds=[Thresholds,ThresholdValue];
                 end
-                %CZ
-                gmeansa=(NmPa.*(1-NimPa));
-                ThresholdPa=(edges(gmeansa==max(gmeansa)));
-                CalibratedThresholdMin=min(ThresholdPa);
-                CalibratedThresholdMax=max(ThresholdPa);
-                AUCa=abs(trapz(NimPa,NmPa));
-                %p4=plot(NimPa,NmPa,':k','LineWidth',2);
-                % p4=area(NimPa,NmPa,'LineWidth',2,'LineStyle',':',FaceColor = '#87cefa');
-                % hold on
-                % p5=plot((NimPa(gmeansa==max(gmeansa))),(NmPa(gmeansa==max(gmeansa))),'k*','LineWidth',5);
-                % hold off
-                % pbaspect([1 1 1]);
-                % ax = gca;
-                % ax.Color = 'none';
-                % ax.FontWeight='bold';
-                % ax.FontSize = 12;
-                % ax.TickLength = [.005 0.035];
-                % ax.LineWidth=2;
-                % xlabel('1-Specificity')
-                % ylabel('Sensitivity')
-                % title('ROC Curve')
-                % %set(gcf, 'Position', get(0,'Screensize')); % Maximize figure
-                % saveas(gcf,['ROC curve generated from Manual Quantification','.png'])
-                CalibratedThresholdValue = max(ThresholdPa);
-                % figure
-                % bar(TrainSet(:,2))
-                % hold on
-                % bar(-TrainSet(:,1)*CalibratedThresholdValue,1,'k')
-                % hold on
-                % yline(CalibratedThresholdValue,'--k','Threshold');
-                % ylabel('Area % Change')
-                % xlabel('Time')
-                AveragedThreshold=[AveragedThreshold,CalibratedThresholdValue];
-                AveragedAUC=[AveragedAUC,AUCa];
-                % here calculate true positive, false positive, true negative, false
-                % negative
-                trueval=ValSet(:,1);
-                predicted=ValSet(:,2)<CalibratedThresholdValue;
-                TP=sum(trueval==1 & predicted==1);
-                FP=sum(trueval==0 & predicted==1);
-                TN=sum(trueval==0 & predicted==0);
-                FN=sum(trueval==1 & predicted==0);
-                TPR=TP/(TP+FN);
-                TNR=TN/(TN+FP);
-                BalancedAccuracy=(TPR+TNR)/2;
-                Precision=TP/(TP+FP);
-                Recall=TP/(TP+FN);
-                AveragedAccuracy=[AveragedAccuracy,BalancedAccuracy];
-                AveragedPrecision=[AveragedPrecision,Precision];
-                AveragedRecall=[AveragedRecall,Recall];
+                if sfl==100
+                        %p4=plot(NimPa,NmPa,'-k','LineWidth',2);
+                        p4=area(NimPa,NmPa,'LineWidth',2,'LineStyle','-',"FaceColor", '#87cefa');
+                        hold on
+                        %p5=plot((NimPa(gmeansa==max(gmeansa))),(NmPa(gmeansa==max(gmeansa))),'g*','LineWidth',1);
+                        hold off
+                        pbaspect([1 1 1]);
+                        ax = gca;
+                        ax.Color = 'none';
+                        ax.FontWeight='bold';
+                        ax.FontSize = 12;
+                        %ax.TickLength = [.005 0.035];
+                        ax.LineWidth=1;
+                        xlabel('1-Specificity')
+                        ylabel('Sensitivity')
+                        title('ROC Curve')
+                        saveas(gcf,['ROC curve generated from Manual Quantification','.png'])
+                 end
             end
-            Rec_threshold=mean(AveragedThreshold,'all');
-            AveragedAUC=mean(AUCa);
-            AverageBalancedAccuracy=mean(AveragedAccuracy);
-            AveragedPrecision=mean(AveragedPrecision);
-            AveragedRecall=mean(AveragedRecall);
-            T2=table(Rec_threshold,AveragedAUC,AverageBalancedAccuracy,AveragedPrecision,AveragedRecall);
+            ThresholdG=mean(AveragedThreshold,'all');
+            PrecisionG=mean(AveragedPrecision);
+            RecallG=mean(AveragedRecall);
+            AUC=mean(AUCa);
+            Threshold=mean(Thresholds);
+            Precision=mean(Precisions);
+            Recall=mean(Recalls);
+            % MCC based threshold
+            Immobility=(sum(GT)/length(GT))*100;
+%             if 20<Immobility || Immobility>80
+%                 Precision=mean(Precisions)
+%                 Recall=mean(Recalls)
+%                 Threshold=mean(Thresholds)
+%             end
+            T2=table(AUC,Threshold,Precision,Recall,Immobility);
             writetable(T2,'Threshold.csv');
-%             %% Figure
-%             figure
-%             i=kfold-1;
-%             ValSet=TrainData(idx(blocksize*i:blocksize*i+blocksize),:);
-%             Data=ValSet;
-%             bar(Data(:,2),1,'k')
-%             %alpha(.5)
-%             hold on
-%             bar(-Data(:,1)*Rec_threshold,1,'b')
-%             hold on
-%             bar(-(Data(:,2)<Rec_threshold)*Rec_threshold,1,'r')
-%             alpha(.5)
-%             hold on
-%             yline(Rec_threshold,'--k');
-%             ylabel('Area % Change')
-%             xlabel('Time')
-%             set(gcf, 'Position', get(0,'Screensize')); % Maximize figure
-%             saveas(gcf,['Area % Change (Gray),Correct (Magenta) Manual (Blue), Auto (Red) Quantification','.png'])
+            %str = {['Optimum Threshold-',num2str(Threshold)]};
+            %text(.25,.5,str)
+            close all
         end
 
         % Button pushed function: CompileAuto
@@ -614,14 +627,12 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             else
                 startsec=app.StartTime.Value;
             end
-            
+
             if isempty(app.EndTime.Value)
                 endsec=0;
             else
                 endsec=app.EndTime.Value;
             end
-            
-            
             Threshold=app.AreaThreshold.Value;
             Minimumchange=app.TimeThresh.Value;
             Ylimit=5;
@@ -629,124 +640,122 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             %% Batch Processing
             FileNames=[];
             AllData=[];
+            fps=15;
+            figure
             for name=1:length(filenames)
                 file=filenames{name}(1:end-4);
                 tf = strcmp(filenames{name}(end-9:end-4),'Manual');
                 if tf==0
-                load(file)
-                startframe=( startsec*fps)+1;
-                endframe=(endsec*fps)+1;
-                if endframe<length(ar_score)
-                Area=ar_score(startframe:endframe);
-                else
-                Area=ar_score(startframe:length(ar_score));
-                endsec=(length(ar_score)-1)/fps;
-                end
-                AreaChange=abs(diff(Area));
-                AreaPrevious=Area(1:end-1);
-                AreaChangePercent=(AreaChange./AreaPrevious)*100;
-                AreaChangePercent(AreaChangePercent>10)=10;
-                r_ar =length(AreaChangePercent)- rem(length(AreaChangePercent),fps);
-                R_ar=AreaChangePercent(1:r_ar);
-                bin_ar = reshape(R_ar,fps,[]);
-                Area_Change=mean(bin_ar,1);
-                im=Area_Change<Threshold;
-                A=im;
-                Till=length(A);
-                transitions = diff([0,A,0]); % find where the array goes from non-zero to zero and vice versa
-                runstarts = find(transitions == 1);
-                runends = (find(transitions == -1)-1); %one past the end
-                runlengths = abs(runends - runstarts);
-                runstarts(runlengths<= Minimumchange) = [];
-                runends(runlengths<= Minimumchange) = [];
-                Y=zeros(length(A),1);
-                for i=1:length(runstarts)
-                    Y(runstarts(i):runends(i))=1;
-                end
-                Immobility_Percentage=(sum(Y(1:Till))/Till)*100;
-                Number_of_bouts=length(runends);
-                if sum(runlengths,'all')==0
-                    Longest_bout=0;
-                else
-                    Longest_bout=max(runlengths)+1;
-                end
-                if sum(runstarts,'all')==0
-                    Immobility_latency=NaN;
-                else
-                    Immobility_latency=runstarts(1)-1;
-                end
-
-                % binned immobility
-
-                if Binsize<length(Y)
-                    bin =length(Y)- rem(length(Y),Binsize);
-                    Rim=Y(1:bin);
-                    if length(Y)>bin
-                        Rim2=Y(bin+1:end);
-                        Rimbin = reshape(Rim,Binsize,[]);
-                        Bins = [sum(Rimbin,1)/Binsize,sum(Rim2)/length(Rim2)]*100;
+                    load([file,'.mat'])
+                    startframe=( startsec*fps)+1;
+                    endframe=(endsec*fps)+1;
+                    if endframe<length(ar_score)
+                        Area=ar_score(startframe:endframe);
                     else
-                        Rimbin = reshape(Rim,Binsize,[]);
-                        Bins = (sum(Rimbin,1)/Binsize)*100;
+                        Area=ar_score(startframe:length(ar_score));
+                        endsec=(length(ar_score)-1)/fps;
                     end
-                else
-                    Bins=sum(Y)/length(Y)*100;
-                end
-                % plot graphs
-                bar(Y*Ylimit,1,'M','EdgeColor','none')
-                hold on
-                bar(double(Y==0)*Ylimit,1,'G','EdgeColor','none')
-                alpha(.3) % sets transparency
-                xticks(0:Binsize:Till)
-                pbaspect([Till Till/10 1])
-                xlim([0 Till])
-                ylim([0 Ylimit])
-                ax = gca;
-                ax.Color ='none';
-                ax.FontWeight='bold';
-                ax.FontSize = 5;
-                ax.TickLength = [.005 0.035];
-                ax.LineWidth=2;
-                box on
-                saveas(gcf,[file,' Raster.png'])
-                hold on
-                p=bar(Area_Change,.5,'k','EdgeColor','none');
-                alpha(.4)
-                hold on
-                xlabel('Time (Second)')
-                ylabel('Δ Area % ')
-                pbaspect([Till Till/10 1])
-                hold on
-                saveas(gcf,[file,' Raster Area Change.png'])
-                hold off
-                figure
-                image(abs(100-Bins))
-                colormap(gray(100))
-                colorbar
-                yticks([])
-                xlabel('Binned Immobility (Darker)')
-                pbaspect([length(Bins) length(Bins)/10 1])
-                ax = gca;
-                ax.Color = 'none';
-                ax.FontWeight='bold';
-                ax.FontSize = 5;
-                ax.TickLength = [.005 0.035];
-                ax.LineWidth=2;
-                ax.XTick = 1:1:length(Y);
-                saveas(gcf,[file,'Binned ','.png'])
-                ExptStartTime=(StartFrame-1)/fps;
-                ExptEndTime=(EndFrame/fps);
-                T1=table(Immobility_Percentage,Immobility_latency,Longest_bout,Number_of_bouts,...
-                    startsec,endsec,ExptStartTime,ExptEndTime,Minimumchange,Threshold,Binsize,Bins);
-                writetable(T1,[file,' Results Auto.csv']);
-                writematrix(Y,[file,' Auto .txt'])
-                FileNames=[FileNames;{file(1:end)}];
-                AllData=[AllData;T1];
-                close all
+                    AreaChange=abs(diff(Area));
+                    AreaPrevious=Area(1:end-1);
+                    AreaChangePercent=(AreaChange./AreaPrevious)*100;
+                    AreaChangePercent(AreaChangePercent>10)=10;
+                    r_ar =length(AreaChangePercent)- rem(length(AreaChangePercent),fps);
+                    R_ar=AreaChangePercent(1:r_ar);
+                    bin_ar = reshape(R_ar,fps,[]);
+                    Area_Change=mean(bin_ar,1);
+                    im=Area_Change<Threshold;
+                    A=im;
+                    Till=length(A);
+                    transitions = diff([0,A,0]); % find where the array goes from non-zero to zero and vice versa
+                    runstarts = find(transitions == 1);
+                    runends = (find(transitions == -1)-1); %one past the end
+                    runlengths = abs(runends - runstarts);
+                    runstarts(runlengths<= Minimumchange) = [];
+                    runends(runlengths<= Minimumchange) = [];
+                    Y=zeros(length(A),1);
+                    for i=1:length(runstarts)
+                        Y(runstarts(i):runends(i))=1;
+                    end
+                    Immobility_Percentage=(sum(Y(1:Till))/Till)*100;
+                    Number_of_bouts=length(runends);
+                    if sum(runlengths,'all')==0
+                        Longest_bout=0;
+                    else
+                        Longest_bout=max(runlengths)+1;
+                    end
+                    if sum(runstarts,'all')==0
+                        Immobility_latency=NaN;
+                    else
+                        Immobility_latency=runstarts(1)-1;
+                    end
+                    % binned immobility
+                    if Binsize<length(Y)
+                        bin =length(Y)- rem(length(Y),Binsize);
+                        Rim=Y(1:bin);
+                        if length(Y)>bin
+                            Rim2=Y(bin+1:end);
+                            Rimbin = reshape(Rim,Binsize,[]);
+                            Bins = [sum(Rimbin,1)/Binsize,sum(Rim2)/length(Rim2)]*100;
+                        else
+                            Rimbin = reshape(Rim,Binsize,[]);
+                            Bins = (sum(Rimbin,1)/Binsize)*100;
+                        end
+                    else
+                        Bins=sum(Y)/length(Y)*100;
+                    end
+                    % plot graphs
+                    subplot(length(filenames),1,name,'align');
+                    bar(Y*Ylimit,1,'FaceColor','#000000','EdgeColor','none')
+                    hold on
+                    bar(double(Y==0)*Ylimit,1,'FaceColor','#FFFAFA','EdgeColor','none')
+                    %alpha(.4) % sets transparency
+                    xticks(0:Binsize:Till)
+                    yticklabels({})
+                    if length(filenames)>name
+                    xticklabels({})
+                    end
+                    %pbaspect([Till Till/10 1])
+                    xlim([0 Till])
+                    ylim([0 Ylimit])
+                    ax = gca;
+                    ax.Color ='none';
+                    ax.FontWeight='bold';
+                    ax.FontSize = 5;
+                    ax.TickLength = [.01 0.01];
+                    ax.LineWidth=.1;
+                    box on
+                    hold on
+                    yticks([])
+%                     subplot(length(filenames),2,name+1,'align');
+%                     image(abs(100-Bins))
+%                     colormap(gray(100))
+%                     yticks([])
+%                     ax = gca;
+%                     ax.Color ='none';
+%                     ax.FontWeight='bold';
+%                     ax.FontSize = 5;
+%                     ax.TickLength = [.01 0.01];
+%                     ax.LineWidth=.1;
+%                     box on
+%                     if length(filenames)>name
+%                     xticklabels({})
+%                     end
+                    T1=table(Immobility_Percentage,Immobility_latency,Longest_bout,Number_of_bouts,...
+                        startsec,endsec,Minimumchange,Threshold,Binsize,Bins);
+                    %writetable(T1,[file,' Results Auto.csv']);
+                    writematrix(Y,[file,' Auto .txt'])
+                    FileNames=[FileNames;{file(1:end)}];
+                    AllData=[AllData;T1];
+                    
                 else
                     continue
                 end
             end
+            set(gcf, 'Position', get(0,'Screensize'));
+            saveas(gcf,[file,' Raster Auto.png'])
+            saveas(gcf,[file,' Raster Auto.svg'])
+            hold off
+            close all
             T2=table(FileNames);
             CombinedData=[T2,AllData];
             writetable(CombinedData,' Results Auto Compiled.csv');
@@ -767,13 +776,14 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             %% Variables
             FileNames=[];
             AllData=[];
+            fps=15;
             %fps=app.FPS.Value;
             if isempty(app.StartTime.Value)
                 startsec=0;
             else
                 startsec=app.StartTime.Value;
             end
-            
+
             if isempty(app.EndTime.Value)
                 endsec=0;
             else
@@ -786,112 +796,104 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             %% Batch Processing
             FileNames=[];
             AllData=[];
+            figure
+            set(gcf, 'Position', get(0,'Screensize'));
             for name=1:length(filenames)
                 file=filenames{name}(1:end-4);
                 tf = strcmp(filenames{name}(end-9:end-4),'Manual');
                 if tf==1
-                load(file)
-                startframe=( startsec*fps)+1;
-                endframe=(endsec*fps)+1;
-                if endframe<length(im2)
-                im2=im2(startframe:endframe);
-                else
-                im2=im2(startframe:length(im2));
-                end
-                rc =length(im2)- rem(length(im2),fps);
-                Rc=im2(1:rc);
-                binc = reshape(Rc,fps,[]);
-                meanbinpercentage1c = mean(binc,1);
-                meanbinpercentage2c=meanbinpercentage1c<0.5;
-                A=meanbinpercentage2c;
-                Till=length(A);
-                transitions = diff([0,A,0]); % find where the array goes from non-zero to zero and vice versa
-                runstarts = find(transitions == 1);
-                runends = (find(transitions == -1)-1); %one past the end
-                runlengths = abs(runends - runstarts);
-                runstarts(runlengths<= Minimumchange) = [];
-                runends(runlengths<= Minimumchange) = [];
-                Y=zeros(length(A),1);
-                for i=1:length(runstarts)
-                    Y(runstarts(i):runends(i))=1;
-                end
-                Immobility_Percentage=(sum(Y(1:Till))/Till)*100;
-                Number_of_bouts=length(runends);
-                if sum(runlengths,'all')==0
-                    Longest_bout=0;
-                else
-                    Longest_bout=max(runlengths)+1;
-                end
-                if sum(runstarts,'all')==0
-                    Immobility_latency=Till;
-                else
-                    Immobility_latency=runstarts(1)-1;
-                end
-                
-                % binned immobility
-                
-                if Binsize<length(Y)
-                    bin =length(Y)- rem(length(Y),Binsize);
-                    Rim=Y(1:bin);
-                    if length(Y)>bin
-                        Rim2=Y(bin+1:end);
-                        Rimbin = reshape(Rim,Binsize,[]);
-                        Bins = [sum(Rimbin,1)/Binsize,sum(Rim2)/length(Rim2)]*100;
+                    load([file,'.mat'])
+                    %im2=im2==0; %only for old data remove it before uploading to git
+                    startframe=( startsec*fps)+1;
+                    endframe=(endsec*fps)+1;
+                    if endframe<length(im2)
+                        im2=im2(startframe:endframe);
                     else
-                        Rimbin = reshape(Rim,Binsize,[]);
-                        Bins = (sum(Rimbin,1)/Binsize)*100;
+                        im2=im2(startframe:length(im2));
                     end
-                else
-                    Bins=sum(Y)/length(Y)*100;
-                end
-                % plot graphs
-                bar(Y*Ylimit,1,'M','EdgeColor','none')
-                alpha(.3) % sets transparency
-                hold on
-                bar(double(Y==0)*Ylimit,1,'G','EdgeColor','none')
-                alpha(.3)
-                xticks(0:Binsize:Till)
-                pbaspect([Till Till/10 1])
-                xlim([0 Till])
-                ylim([0 Ylimit])
-                ax = gca;
-                ax.Color ='none';
-                ax.FontWeight='bold';
-                ax.FontSize = 5;
-                ax.TickLength = [.005 0.035];
-                ax.LineWidth=2;
-                hold on
-                %set(gcf, 'Position', get(0,'Screensize')); % Maximize figure
-                xlabel('Time (second)')
-                box on
-                saveas(gcf,[file,' Raster Manual.png'])
-                hold off
-                figure
-                image(abs(100-Bins))
-                colormap(gray(100))
-                colorbar
-                yticks([])
-                xlabel('Binned Immobility (Darker) Manual')
-                pbaspect([length(Bins) length(Bins)/10 1])
-                ax = gca;
-                ax.Color = 'none';
-                ax.FontWeight='bold';
-                ax.FontSize = 5;
-                ax.TickLength = [.005 0.035];
-                ax.LineWidth=2;
-                ax.XTick = 1:1:length(Y);
-                saveas(gcf,[file,'Binned Manual','.png'])
-                T1=table(Immobility_Percentage,Immobility_latency,Longest_bout,Number_of_bouts,...
-                    startsec,endsec,Minimumchange,Threshold,Binsize,Bins);
-                writetable(T1,[file,' Results Manual.csv']);
-                FileNames=[FileNames;{file(1:end)}];
-                writematrix(Y,[file,' Manual.txt'])
-                AllData=[AllData;T1];
-                close all
+                    rc =length(im2)- rem(length(im2),fps);
+                    Rc=im2(1:rc);
+                    binc = reshape(Rc,fps,[]);
+                    meanbinpercentage1c = mean(binc,1);
+                    meanbinpercentage2c=meanbinpercentage1c<0.5;
+                    A=meanbinpercentage2c;
+                    Till=length(A);
+                    transitions = diff([0,A,0]); % find where the array goes from non-zero to zero and vice versa
+                    runstarts = find(transitions == 1);
+                    runends = (find(transitions == -1)-1); %one past the end
+                    runlengths = abs(runends - runstarts);
+                    runstarts(runlengths<= Minimumchange) = [];
+                    runends(runlengths<= Minimumchange) = [];
+                    Y=zeros(length(A),1);
+                    for i=1:length(runstarts)
+                        Y(runstarts(i):runends(i))=1;
+                    end
+                    Immobility_Percentage=(sum(Y(1:Till))/Till)*100;
+                    Number_of_bouts=length(runends);
+                    if sum(runlengths,'all')==0
+                        Longest_bout=0;
+                    else
+                        Longest_bout=max(runlengths)+1;
+                    end
+                    if sum(runstarts,'all')==0
+                        Immobility_latency=Till;
+                    else
+                        Immobility_latency=runstarts(1)-1;
+                    end
+
+                    % binned immobility
+
+                    if Binsize<length(Y)
+                        bin =length(Y)- rem(length(Y),Binsize);
+                        Rim=Y(1:bin);
+                        if length(Y)>bin
+                            Rim2=Y(bin+1:end);
+                            Rimbin = reshape(Rim,Binsize,[]);
+                            Bins = [sum(Rimbin,1)/Binsize,sum(Rim2)/length(Rim2)]*100;
+                        else
+                            Rimbin = reshape(Rim,Binsize,[]);
+                            Bins = (sum(Rimbin,1)/Binsize)*100;
+                        end
+                    else
+                        Bins=sum(Y)/length(Y)*100;
+                    end
+                    % plot graphs
+                    subplot(length(filenames),1,name,'align');
+                    bar(Y*Ylimit,1,'FaceColor','#000000','EdgeColor','none')
+                    hold on
+                    bar(double(Y==0)*Ylimit,1,'FaceColor','#FFFAFA','EdgeColor','none')
+                    xticks(0:Binsize:Till)
+                    yticklabels({})
+                    if length(filenames)>name
+                    xticklabels({})
+                    end
+                    %pbaspect([Till Till/10 1])
+                    xlim([0 Till])
+                    ylim([0 Ylimit])
+                    ax = gca;
+                    ax.Color ='none';
+                    ax.FontWeight='bold';
+                    ax.FontSize = 5;
+                    ax.TickLength = [.01 0.01];
+                    ax.LineWidth=.1;
+                    if length(filenames)==name
+                    xlabel('Time (Second)')
+                    end
+                    yticks([])
+                    T1=table(Immobility_Percentage,Immobility_latency,Longest_bout,Number_of_bouts,...
+                        startsec,endsec,Minimumchange,Threshold,Binsize,Bins);
+                    FileNames=[FileNames;{file(1:end)}];
+                    %writetable(T1,[file,' Results Manual.csv']);
+                    writematrix(Y,[file,' Manual.txt'])
+                    AllData=[AllData;T1];
                 else
                     continue
                 end
             end
+            saveas(gcf,[file,' Raster Manual.png'])
+            saveas(gcf,[file,' Raster Manual.svg'])
+            hold off
+            close all
             T2=table(FileNames);
             CombinedData=[T2,AllData];
             writetable(CombinedData,' Results Manual Compiled.csv');
@@ -914,7 +916,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.Tool = uifigure('Visible', 'off');
             app.Tool.AutoResizeChildren = 'off';
             app.Tool.Color = [1 1 1];
-            app.Tool.Position = [100 100 360 480];
+            app.Tool.Position = [100 100 358 407];
             app.Tool.Name = 'DBscorerV2';
             app.Tool.Resize = 'off';
 
@@ -923,7 +925,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.LoadVideo.ButtonPushedFcn = createCallbackFcn(app, @LoadVideoPushed, true);
             app.LoadVideo.Interruptible = 'off';
             app.LoadVideo.FontName = 'Arial';
-            app.LoadVideo.Position = [11 448 161 25];
+            app.LoadVideo.Position = [14 377 159 25];
             app.LoadVideo.Text = 'Load Video';
 
             % Create MarkROI
@@ -931,13 +933,13 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.MarkROI.ButtonPushedFcn = createCallbackFcn(app, @MarkROIPushed, true);
             app.MarkROI.Interruptible = 'off';
             app.MarkROI.Tooltip = {''};
-            app.MarkROI.Position = [11 179 161 25];
+            app.MarkROI.Position = [14 181 159 25];
             app.MarkROI.Text = 'Mark ROI';
 
             % Create StartsLabel
             app.StartsLabel = uilabel(app.Tool);
             app.StartsLabel.HorizontalAlignment = 'right';
-            app.StartsLabel.Position = [11 311 58 22];
+            app.StartsLabel.Position = [12 311 58 22];
             app.StartsLabel.Text = 'Start (s)';
 
             % Create ProcessVideoStart
@@ -945,13 +947,13 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.ProcessVideoStart.ValueChangingFcn = createCallbackFcn(app, @ProcessVideoStartValueChanging, true);
             app.ProcessVideoStart.Limits = [1 Inf];
             app.ProcessVideoStart.Interruptible = 'off';
-            app.ProcessVideoStart.Position = [89 311 81 22];
+            app.ProcessVideoStart.Position = [97 311 76 22];
             app.ProcessVideoStart.Value = 1;
 
             % Create EndsLabel
             app.EndsLabel = uilabel(app.Tool);
             app.EndsLabel.HorizontalAlignment = 'right';
-            app.EndsLabel.Position = [11 279 56 22];
+            app.EndsLabel.Position = [14 280 56 22];
             app.EndsLabel.Text = 'End (s)';
 
             % Create ProcessVideoEnd
@@ -959,26 +961,26 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.ProcessVideoEnd.ValueChangingFcn = createCallbackFcn(app, @ProcessVideoEndValueChanging, true);
             app.ProcessVideoEnd.Limits = [2 Inf];
             app.ProcessVideoEnd.Interruptible = 'off';
-            app.ProcessVideoEnd.Position = [89 279 81 22];
+            app.ProcessVideoEnd.Position = [97 280 76 22];
             app.ProcessVideoEnd.Value = 2;
 
             % Create TimeEditFieldLabel
             app.TimeEditFieldLabel = uilabel(app.Tool);
             app.TimeEditFieldLabel.HorizontalAlignment = 'right';
-            app.TimeEditFieldLabel.Position = [11 247 31 22];
+            app.TimeEditFieldLabel.Position = [39 249 31 22];
             app.TimeEditFieldLabel.Text = 'Time';
 
             % Create Time
             app.Time = uieditfield(app.Tool, 'numeric');
             app.Time.Interruptible = 'off';
             app.Time.Editable = 'off';
-            app.Time.Position = [89 247 81 22];
+            app.Time.Position = [97 249 76 22];
 
             % Create ProcessVideo
             app.ProcessVideo = uibutton(app.Tool, 'push');
             app.ProcessVideo.ButtonPushedFcn = createCallbackFcn(app, @ProcessVideoButtonPushed, true);
             app.ProcessVideo.Interruptible = 'off';
-            app.ProcessVideo.Position = [11 114 161 25];
+            app.ProcessVideo.Position = [14 147 159 25];
             app.ProcessVideo.Text = 'Process Video';
 
             % Create FixBackground
@@ -986,83 +988,71 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.FixBackground.ButtonPushedFcn = createCallbackFcn(app, @FixBackgroundPushed, true);
             app.FixBackground.Interruptible = 'off';
             app.FixBackground.Tooltip = {''};
-            app.FixBackground.Position = [11 378 161 25];
+            app.FixBackground.Position = [186 246 159 25];
             app.FixBackground.Text = 'Fix Background';
-
-            % Create BinarizeLabel
-            app.BinarizeLabel = uilabel(app.Tool);
-            app.BinarizeLabel.HorizontalAlignment = 'right';
-            app.BinarizeLabel.Position = [11 148 67 22];
-            app.BinarizeLabel.Text = 'Binarize';
-
-            % Create BinaryThreshold
-            app.BinaryThreshold = uispinner(app.Tool);
-            app.BinaryThreshold.ValueChangingFcn = createCallbackFcn(app, @BinaryThresholdValueChanging, true);
-            app.BinaryThreshold.Limits = [0 100];
-            app.BinaryThreshold.Position = [89 148 81 22];
 
             % Create EnterInfo
             app.EnterInfo = uieditfield(app.Tool, 'text');
-            app.EnterInfo.Position = [11 213 161 25];
+            app.EnterInfo.Position = [14 215 159 25];
 
             % Create CreateBackground
             app.CreateBackground = uibutton(app.Tool, 'push');
             app.CreateBackground.ButtonPushedFcn = createCallbackFcn(app, @CreateBackgroundButtonPushed, true);
             app.CreateBackground.Interruptible = 'off';
             app.CreateBackground.Tooltip = {''};
-            app.CreateBackground.Position = [11 413 161 25];
+            app.CreateBackground.Position = [186 277 159 25];
             app.CreateBackground.Text = 'Create Background';
 
             % Create ManualScoring
             app.ManualScoring = uibutton(app.Tool, 'push');
             app.ManualScoring.ButtonPushedFcn = createCallbackFcn(app, @ManualScoringButtonPushed, true);
             app.ManualScoring.Tooltip = {''};
-            app.ManualScoring.Position = [11 80 161 25];
+            app.ManualScoring.Position = [14 113 159 25];
             app.ManualScoring.Text = 'Manual Scoring';
 
             % Create Play
             app.Play = uibutton(app.Tool, 'state');
             app.Play.Tooltip = {''};
             app.Play.Text = 'Play';
-            app.Play.Position = [11 46 161 25];
+            app.Play.Position = [14 79 159 25];
 
             % Create StateButton
             app.StateButton = uibutton(app.Tool, 'state');
             app.StateButton.Tooltip = {''};
             app.StateButton.Text = 'State';
-            app.StateButton.Position = [12 12 161 25];
+            app.StateButton.Position = [14 47 159 25];
 
             % Create Cancel
             app.Cancel = uibutton(app.Tool, 'state');
             app.Cancel.Tooltip = {''};
             app.Cancel.Text = 'Cancel';
-            app.Cancel.Position = [195 12 161 25];
+            app.Cancel.Position = [14 13 159 25];
 
             % Create GetThresh
             app.GetThresh = uibutton(app.Tool, 'push');
             app.GetThresh.ButtonPushedFcn = createCallbackFcn(app, @GetThreshButtonPushed, true);
             app.GetThresh.Interruptible = 'off';
             app.GetThresh.Tooltip = {''};
-            app.GetThresh.Position = [195 350 161 25];
+            app.GetThresh.Position = [186 308 159 25];
             app.GetThresh.Text = 'Get Threshold';
 
             % Create AreaThresholdLabel
             app.AreaThresholdLabel = uilabel(app.Tool);
             app.AreaThresholdLabel.HorizontalAlignment = 'right';
-            app.AreaThresholdLabel.Position = [196 143 108 22];
+            app.AreaThresholdLabel.Position = [184 81 96 22];
             app.AreaThresholdLabel.Text = 'Δ Area Threshold';
 
             % Create AreaThreshold
             app.AreaThreshold = uieditfield(app.Tool, 'numeric');
             app.AreaThreshold.Limits = [0 Inf];
             app.AreaThreshold.Tooltip = {'Optional'};
-            app.AreaThreshold.Position = [311 143 45 23];
-            app.AreaThreshold.Value = 0.65;
+            app.AreaThreshold.Position = [293 81 52 23];
+            app.AreaThreshold.Value = 2.2;
 
             % Create TimeThresholdsLabel
             app.TimeThresholdsLabel = uilabel(app.Tool);
             app.TimeThresholdsLabel.HorizontalAlignment = 'right';
-            app.TimeThresholdsLabel.Position = [187 225 116 22];
+            app.TimeThresholdsLabel.Position = [184 115 101 22];
             app.TimeThresholdsLabel.Text = 'Time Threshold (s)';
 
             % Create TimeThresh
@@ -1070,15 +1060,14 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.TimeThresh.Limits = [0 Inf];
             app.TimeThresh.RoundFractionalValues = 'on';
             app.TimeThresh.Tooltip = {'Optional'};
-            app.TimeThresh.Position = [311 225 45 23];
-            app.TimeThresh.Value = 1;
+            app.TimeThresh.Position = [293 115 52 23];
 
             % Create CompileAuto
             app.CompileAuto = uibutton(app.Tool, 'push');
             app.CompileAuto.ButtonPushedFcn = createCallbackFcn(app, @CompileAutoButtonPushed, true);
             app.CompileAuto.Interruptible = 'off';
             app.CompileAuto.Tooltip = {''};
-            app.CompileAuto.Position = [194 99 162 26];
+            app.CompileAuto.Position = [186 13 159 25];
             app.CompileAuto.Text = 'Compile ';
 
             % Create CompileManual
@@ -1086,13 +1075,13 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.CompileManual.ButtonPushedFcn = createCallbackFcn(app, @CompileManualButtonPushed, true);
             app.CompileManual.Interruptible = 'off';
             app.CompileManual.Tooltip = {''};
-            app.CompileManual.Position = [194 55 162 26];
+            app.CompileManual.Position = [186 47 159 25];
             app.CompileManual.Text = 'Compile Manual';
 
             % Create StartTimesLabel
             app.StartTimesLabel = uilabel(app.Tool);
             app.StartTimesLabel.HorizontalAlignment = 'right';
-            app.StartTimesLabel.Position = [226 308 78 22];
+            app.StartTimesLabel.Position = [204 217 81 22];
             app.StartTimesLabel.Text = 'Start Time (s)';
 
             % Create StartTime
@@ -1100,12 +1089,12 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.StartTime.Limits = [0 Inf];
             app.StartTime.RoundFractionalValues = 'on';
             app.StartTime.Tooltip = {'Optional'};
-            app.StartTime.Position = [311 308 45 23];
+            app.StartTime.Position = [293 217 52 23];
 
             % Create EndTimesLabel
             app.EndTimesLabel = uilabel(app.Tool);
             app.EndTimesLabel.HorizontalAlignment = 'right';
-            app.EndTimesLabel.Position = [233 267 74 22];
+            app.EndTimesLabel.Position = [208 183 77 22];
             app.EndTimesLabel.Text = 'End Time (s)';
 
             % Create EndTime
@@ -1113,27 +1102,27 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.EndTime.Limits = [0 Inf];
             app.EndTime.RoundFractionalValues = 'on';
             app.EndTime.Tooltip = {'Optional'};
-            app.EndTime.Position = [311 266 45 23];
+            app.EndTime.Position = [293 183 52 23];
             app.EndTime.Value = 300;
 
             % Create ClipLabel
             app.ClipLabel = uilabel(app.Tool);
             app.ClipLabel.HorizontalAlignment = 'right';
-            app.ClipLabel.Position = [280 394 26 22];
-            app.ClipLabel.Text = 'Clip';
+            app.ClipLabel.Position = [187 344 96 22];
+            app.ClipLabel.Text = 'Clip for threshold';
 
             % Create Clip
             app.Clip = uieditfield(app.Tool, 'numeric');
             app.Clip.Limits = [0 Inf];
             app.Clip.RoundFractionalValues = 'on';
             app.Clip.Tooltip = {'Optional'};
-            app.Clip.Position = [311 394 45 23];
+            app.Clip.Position = [293 344 52 23];
             app.Clip.Value = 1;
 
             % Create TimeBinsLabel
             app.TimeBinsLabel = uilabel(app.Tool);
             app.TimeBinsLabel.HorizontalAlignment = 'right';
-            app.TimeBinsLabel.Position = [225 184 80 22];
+            app.TimeBinsLabel.Position = [190 149 95 22];
             app.TimeBinsLabel.Text = 'Time Bin (s)';
 
             % Create TimeBin
@@ -1141,7 +1130,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.TimeBin.Limits = [0 Inf];
             app.TimeBin.RoundFractionalValues = 'on';
             app.TimeBin.Tooltip = {'Optional'};
-            app.TimeBin.Position = [311 184 45 23];
+            app.TimeBin.Position = [293 149 52 23];
             app.TimeBin.Value = 60;
 
             % Create FigWindow
@@ -1149,8 +1138,18 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
             app.FigWindow.ButtonPushedFcn = createCallbackFcn(app, @FigWindowButtonPushed, true);
             app.FigWindow.Interruptible = 'off';
             app.FigWindow.Tooltip = {''};
-            app.FigWindow.Position = [11 343 161 25];
+            app.FigWindow.Position = [14 342 159 25];
             app.FigWindow.Text = 'Figure Window';
+
+            % Create DBscorerV2Label
+            app.DBscorerV2Label = uilabel(app.Tool);
+            app.DBscorerV2Label.HorizontalAlignment = 'center';
+            app.DBscorerV2Label.FontName = 'Lucida Calligraphy';
+            app.DBscorerV2Label.FontSize = 20;
+            app.DBscorerV2Label.FontWeight = 'bold';
+            app.DBscorerV2Label.FontColor = [1 0.4118 0.1608];
+            app.DBscorerV2Label.Position = [185 376 160 27];
+            app.DBscorerV2Label.Text = 'DBscorerV2';
 
             % Show the figure after all components are created
             app.Tool.Visible = 'on';
@@ -1161,7 +1160,7 @@ classdef DBscorerV2_exported < matlab.apps.AppBase
     methods (Access = public)
 
         % Construct app
-        function app = DBscorerV2_exported
+        function app = DBscorerV200222023_exported
 
             % Create UIFigure and components
             createComponents(app)
