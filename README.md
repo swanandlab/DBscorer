@@ -28,11 +28,6 @@ Mac (Need MATLAB):
 
 Use DBscorerV2 exported.m file. 
 
-**DBscorer V2:  Use**
-
-https://user-images.githubusercontent.com/50400250/208101966-779e9dae-dc6b-413d-85fa-4e3f4e038780.mp4
-
-
 # Notes
 1. Mount the camera using a tripod.
 2. The background should be free of glare and shadows. To prevent shadows and glares, use diffuse indirect light. Use a non-shiny background.
@@ -62,38 +57,48 @@ This can be easily done using [ffmpeg](https://www.gyan.dev/ffmpeg/builds/) soft
 
 # DBscorerV2 
 
-Load Video: Convert the videos to a constant frame rate video in a MATLAB-supported video format. Use ffmpeg as described. You may downsample the video if needed. You can select one video file at a time for processing.
+Convert the videos to a constant frame rate video in a MATLAB-supported video format (mp4, avi, mov). Use ffmpeg as described. You may downsample the video if needed. You can select one video file at a time for processing.
+Please follow the steps below. 
 
-Start (s) and End (s): Use this to define the start and End of the video analysis and show the frame.
+# Steps:
+1. Load Video: Use this button to load the video to be analyzed. Pressing this button would open a window for file selection. Click on your video file that is to be analyzed and click open. This will open a “figure window” showing the first frame.
 
-Create Background: You can create a background for selected part of video using this. You can select a start and end such that you get a clean background.
+2. Figure Window: Use this button to reopen the figure window if you have closed it.
 
-Fix Background: To fix the background, select the area generated from animal pixels, as shown in the demo video.
+3. Start (s) and End (s): Use this to define the start and end (seconds) of the video analysis. Figure window will help you to choose the start and end points appropriately.
 
-Figure Window: This button creates a window for showing an image of a video frame. If you accidentally close the figure window, changing the start(s) won't show any video frame. In this case, use the figure window to create the window where the video frame will be shown and then change the start(s).
+4. Time: This shows the total duration of video to be analyzed. This field is not editable.
 
-Info: Before marking your ROI, you can enter the information here about the animal.
+5. Label: You can use this field to add labels. Do not use any special characters or file extensions here (alphanumeric characters only). 
 
-Mark ROI: For TST and FST, select the area where the animal remains for the analysis period. The animal should not get outside. After selection, you will get suggestions for a binary threshold value.
+6. Create Background: You can create a clean background (without a mouse) for a selected part of the video using this. In most cases you will get a clean background. In case you do not get a clean background image,  you can change start and end such that you get a clean background. After getting a clean background, you should change the start and end points back to their original values for analysis.
 
-Process Video: Process video using this. You can repeat the steps to process all the videos. Then compile data later by selecting all the files together. You can use the cancel button to stop processing it.
+7. Fix Background: If the background is not clean even after step no 7 then click fix background button to select the area covering artifact pixels as shown in the demo video.
 
-Manual Scoring: Do manual scoring either to determine an optimal threshold or you want to do manual analysis in a more detailed fashion than using a stopwatch. Do the manual scoring as shown for 3-4 min video for 3-4 min to get an optimum threshold value for the whole batch of similarly recorded videos. The setup remains the same for all the recordings (light, background, etc.). We generally select first 2 mintute and last 2 minute video of all animal in the video for scoring (4 animal mostly). 
+8. Mark ROI: For TST and FST, select the area where the animal remains for the analysis period. The animal should not go outside the selected area throughout the analysis period. 
 
-Clip: Clip value removes periods of state switching. A clip value of 1  will clip data from pre and post-transition while determining the optimal threshold. Doing this accounts for the delay in changing the toggle button.
+9. Process Video: You can use this button to perform the immobility analysis. This will create a .mat file for each animal which will be used for subsequent analysis. You can repeat the steps to process all the animals. 
 
-Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a data file with optimum threshold value and AUC, precision and recall for the threshold ( Higher the better).
+Jump to step no 15 for automated analysis using the recommended threshold.
 
-Compile Manual: Once you finish scoring all the videos manually, you can select all the .mat files ending with the manual. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring. It will also generate a raster plot in order that is there in excel sheet.
+10. Manual Scoring: Do manual scoring either to determine an optimal threshold or you want to do manual analysis in a more detailed fashion than using a stopwatch. To perform manual scoring for obtaining the optimal threshold, you will have to perform all the previous steps in that order. We do not recommend performing manual scoring for threshold determination steps by non-experts. Because this will lead to erroneous threshold. Instead you can use the recommended threshold. Recommended threshold for FST is 1.6 , and TST is 0.6. 
+For threshold determination, we recommend manually analyzing 3-4 randomly chosen videos (first and last 2 minutes of each video will result in better threshold determination).
 
-Compile: Once you process all the videos, you can select all the .mat files generated from the process video. It will generate an excel sheet containing all the data together. It ignores the mat file from the manual analysis and compiles only the .mat files generated from the process video. It will also generate a raster plot in order that is there in excel sheet.
+11. Play and State: These buttons are used for manual scoring. They will be activated only when the manual scoring option is selected. Video will be paused at frame 1 of analysis by default and pressing “play” will start playing the video. Use the state button to switch between mobile (Green) and immobile(Magenta). You will also see a colored strip on top of the video corresponding to the state you have selected to aid in manual scoring. The default state is mobile.
+
+12. Clip: Clip value removes periods of state switching. A clip value of 1 (recommended) will clip data from pre and post-transition while determining the optimal threshold. Doing this accounts for the delay in changing the toggle button.
+
+13. Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a csv file with optimum threshold value and AUC, precision and recall for the threshold ( Higher the better).
+
+14. Compile Manual: This step is required only if you wish to do complete manual analysis and not required for threshold determination. Once you finish scoring all the videos manually, you can select all the .mat files by clicking the “compile manual button”. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring. It will also generate a raster plot in order that is there in the excel sheet.
+
+15. Compile: This button works in a similar manner as earlier except for automated analysis. Here, once you process all the videos, you can select all the .mat files generated from the “process video”(step 9). It will generate an excel sheet containing all the data together. It will also generate a raster plot in order that is there in the excel sheet.
 
 
 
 # Published in [eNeuro](https://doi.org/10.1523/ENEURO.0305-21.2021)
 Please cite the paper if you use the code for analysis.
 Email us in case if you need any help.
-
 
 
 # Old DBscorer Use
@@ -117,7 +122,6 @@ C:\ffmpeg\Converted_Videos
 NOTE: You will need administrator rights to run the MATLAB Runtime installer. 
 
 2. Run DBscorer.exe.
-
 
 
 # Detecting Animal Activity in Long Video
