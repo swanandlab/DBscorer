@@ -82,7 +82,7 @@ Please follow the steps below.
 
 9. Process Video: You can use this button to perform the immobility analysis. This will create a .mat file for each animal which will be used for subsequent analysis. You can repeat the steps to process all the animals. 
 
-Jump to step no 15 for automated analysis using the recommended threshold.
+Jump to step no 16 for automated analysis using the recommended threshold.
 
 10. Manual Scoring: Do manual scoring either to determine an optimal threshold or you want to do manual analysis in a more detailed fashion than using a stopwatch. To perform manual scoring for obtaining the optimal threshold, you will have to perform all the previous steps in that order. We do not recommend performing manual scoring for threshold determination steps by non-experts. Because this will lead to erroneous threshold. Instead you can use the recommended threshold. Recommended threshold for FST is 1.6 , and TST is 0.6. 
 For threshold determination, we recommend manually analyzing 3-4 randomly chosen videos (first and last 2 minutes of each video will result in better threshold determination).
