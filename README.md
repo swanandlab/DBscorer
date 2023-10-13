@@ -34,6 +34,9 @@ Use DBscorerV2 exported.m file.
 4. Crop a rectangular area so that all animal parts are contained within it while avoiding the surrounding area. View the demo video.
 5. The size of the video imposes restrictions on DBscorer. In such cases, downsample or convert the video. (Issue is fixed in DBscorer V2).
 6. Video should have a constant frame rate. If not, then convert with ffmpeg or any other program you prefer.
+7. Do not use a video with very low or very high immobility for threshold generation, it might fail to compute threshold in such cases. Immobility between 30-70% works best. Check your file name after you generate the manual analysis; it should be in pairs, FST.mat and FST manual.mat.
+8. Your video name or entered info should not contain full stop (.).
+
 
 To prevent issues with detection, it is always a good idea to enhance video quality while recording. To test and get a sense of the recording conditions, kindly view the sample videos.
 
@@ -88,11 +91,18 @@ For threshold determination, we recommend manually analyzing 3-4 randomly chosen
 
 12. Clip: Clip value removes periods of state switching. A clip value of 1 (recommended) will clip data from pre and post-transition while determining the optimal threshold. Doing this accounts for the delay in changing the toggle button.
 
-13. Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a csv file with optimum threshold value and AUC, precision and recall for the threshold ( Higher the better).
 
-14. Compile Manual: This step is required only if you wish to do complete manual analysis and not required for threshold determination. Once you finish scoring all the videos manually, you can select all the .mat files by clicking the “compile manual button”. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring. It will also generate a raster plot in order that is there in the excel sheet.
+14. Get Threshold: Once you manually score 3-4 videos, you can select all the .mat files to get an optimum threshold. It will generate a csv file with optimum threshold value and AUC, precision and recall for the threshold ( Higher the better). You can then use the threshold for rest of videos in the batch.
 
-15. Compile: This button works in a similar manner as earlier except for automated analysis. Here, once you process all the videos, you can select all the .mat files generated from the “process video”(step 9). It will generate an excel sheet containing all the data together. It will also generate a raster plot in order that is there in the excel sheet.
+15. Time threshold is the minimum time required to say an animal is immobile or not. Let's say you consider that  an animal is immobile when it remains immobile  for at least 2 seconds. Doing so will remove any immobility period that is less than 2 seconds and it will reduce the total immobility %. 
+
+Before (7 second immobile, latency 4, 5 bouts) : 0 0 0 1 0 0 0 1 1 0 1 1 0 0 1 0 1 0
+
+After    (4 second immobile, latency 8, 2 bouts) : 0 0 0 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0
+
+15. Compile Manual: This step is required only if you wish to do complete manual analysis and not required for threshold determination. Once you finish scoring all the videos manually, you can select all the .mat files by clicking the “compile manual button”. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring. It will also generate a raster plot in order that is there in the excel sheet.
+
+16. Compile: This button works in a similar manner as earlier except for automated analysis. Here, once you process all the videos, you can select all the .mat files generated from the “process video”(step 9). It will generate an excel sheet containing all the data together. It will also generate a raster plot in order that is there in the excel sheet.
 
 
 
