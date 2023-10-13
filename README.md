@@ -96,9 +96,9 @@ For threshold determination, we recommend manually analyzing 3-4 randomly chosen
 
 15. Time threshold is the minimum time required to say an animal is immobile or not. Let's say you consider that  an animal is immobile when it remains immobile  for at least 2 seconds. Doing so will remove any immobility period that is less than 2 seconds and it will reduce the total immobility %. 
 
-Before (7 second immobile, latency 4, 5 bouts) : 0 0 0 1 0 0 0 1 1 0 1 1 0 0 1 0 1 0
+0 0 0 1 0 0 0 1 1 0 1 1 0 0 1 0 1 0 . Before (7 second immobile, latency 4, 5 bouts)
 
-After    (4 second immobile, latency 8, 2 bouts) : 0 0 0 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0
+0 0 0 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0 . After(4 second immobile, latency 8, 2 bouts)
 
 15. Compile Manual: This step is required only if you wish to do complete manual analysis and not required for threshold determination. Once you finish scoring all the videos manually, you can select all the .mat files by clicking the “compile manual button”. It will generate an excel sheet containing all the data together. It compiles only the .mat files generated from manual scoring. It will also generate a raster plot in order that is there in the excel sheet.
 
