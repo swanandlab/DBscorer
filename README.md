@@ -1,6 +1,5 @@
 ![Visitors](https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fgithub.com%2Fswanandlab%2FDBscorer&label=No%20of%20times%20visited&countColor=%2337d67a&style=flat-square)
 
-https://github.com/swanandlab/DBscorer/blob/main/V2.png?raw=true)
 
 Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scoring ).
 
