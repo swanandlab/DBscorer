@@ -5,6 +5,8 @@ Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scor
 
 We've enhanced DBscorer's functionality and usability. We advise using **DBscorerV2**.
 
+Added DBscorerV2Dev with few changes in GUI and outputs files.
+
 
 # Validation Results of DBscorer V2
 
