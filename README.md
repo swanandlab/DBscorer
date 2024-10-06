@@ -5,7 +5,7 @@ Automatic Mobility Based Behavioral Quantification ( With Option for Manual Scor
 
 We've enhanced DBscorer's functionality and usability. We advise using **DBscorerV2**.
 
-DBscorerV3 will come soon with few changes in GUI and outputs files. Soon, we will be releasing a program to analyse mouse behaviour in commonly used behaviour tests such as for anxiety and spatial memory.
+DBscorerV3 will come soon with few changes in GUI and outputs files. For now you can try DBscorerV2Dev and give feedback. Soon, we will be releasing a program to analyse mouse behaviour in commonly used behaviour tests such as for anxiety and spatial memory.
 
 
 # Validation Results of DBscorer V2
