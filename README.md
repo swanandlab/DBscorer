@@ -28,7 +28,7 @@ Mac (Need MATLAB):
 Use DBscorerV2 exported.m file. 
 ---
 
-> #[!NOTES]
+> [!NOTES]
 >
 1. Mount the camera using a tripod.
 2. The background should be free of glare and shadows. To prevent shadows and glares, use diffuse indirect light. Use a non-shiny background.
