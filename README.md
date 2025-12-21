@@ -26,8 +26,10 @@ Windows (Tested):
 Mac (Need MATLAB):
 
 Use DBscorerV2 exported.m file. 
+---
 
-# [!NOTES]
+> #[!NOTES]
+>
 1. Mount the camera using a tripod.
 2. The background should be free of glare and shadows. To prevent shadows and glares, use diffuse indirect light. Use a non-shiny background.
 4. Crop a rectangular area so that all animal parts are contained within it while avoiding the surrounding area. View the demo video.
@@ -35,7 +37,7 @@ Use DBscorerV2 exported.m file.
 6. Video should have a constant frame rate. If not, then convert with ffmpeg or any other program you prefer.
 7. Do not use a video with very low or very high immobility for threshold generation, it might fail to compute threshold in such cases. Immobility between 30-70% works best. Check your file name after you generate the manual analysis; it should be in pairs, FST.mat and FST manual.mat.
 8. Your video name or entered info should not contain full stop (.).
-
+---
 
 To prevent issues with detection, it is always a good idea to enhance video quality while recording. To test and get a sense of the recording conditions, kindly view the sample videos.
 
