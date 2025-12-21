@@ -113,5 +113,5 @@ Please cite the paper if you use the code.
 
 If you have a long video recorded, it is also possible to detect animal activity (not shown with data, but the concept is the same).
 
-<p align="center">Made with Love ❤️ by Arnab Nandi at IISc, India</p>
+<p align="center">Made by Arnab Nandi at IISc, India</p>
 
