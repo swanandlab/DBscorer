@@ -27,7 +27,7 @@ Mac (Need MATLAB):
 
 Use DBscorerV2 exported.m file. 
 
-# Notes
+# [!NOTES]
 1. Mount the camera using a tripod.
 2. The background should be free of glare and shadows. To prevent shadows and glares, use diffuse indirect light. Use a non-shiny background.
 4. Crop a rectangular area so that all animal parts are contained within it while avoiding the surrounding area. View the demo video.
@@ -113,5 +113,5 @@ Please cite the paper if you use the code.
 
 If you have a long video recorded, it is also possible to detect animal activity (not shown with data, but the concept is the same).
 
-
+<p align="center">Made with Love ❤️ by Arnab Nandi at IISc, India</p>
 
