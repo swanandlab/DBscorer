@@ -8,7 +8,7 @@ We've enhanced DBscorer's functionality and usability. We advise using **DBscore
 DBscorerV3 will come soon with few changes in GUI and outputs files. For now you can try DBscorerV2Dev and give feedback. 
 Now you can use this for both scoring and analysis of mouse behavior mazes.
 
-[Tracenote](https://arnabneuro.github.io/TraceNotev1.html)
+[Tracenote](https://arnabneuro.github.io)
 # Validation Results of DBscorer V2
 
 ![alt text](https://github.com/swanandlab/DBscorer/blob/main/FST%20Correlation%20Plot.jpg?raw=true)
